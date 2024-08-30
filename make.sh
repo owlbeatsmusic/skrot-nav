@@ -1,2 +1,2 @@
 #!/bin/zsh
-cc main.c space.c skrot-nav.c devices.c -o main -Wall
+cc src/main.c src/space.c src/skrot-nav.c src/devices.c -o main -Wall
