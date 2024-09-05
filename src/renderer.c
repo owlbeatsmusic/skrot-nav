@@ -20,8 +20,8 @@ const char COLORCODE_BG_CYAN[]    = "\x1b[46m";
 const char COLORCODE_FG_WHITE[]   = "\x1b[37m";
 const char COLORCODE_BG_WHITE[]   = "\x1b[47m";
 
-extern const int GLOBAL_SCREEN_WIDTH  = 100;
-extern const int GLOBAL_SCREEN_HEIGHT = 50;
+const int GLOBAL_SCREEN_WIDTH  = 100;
+const int GLOBAL_SCREEN_HEIGHT = 50;
 
 typedef struct {
 	char symbol;
@@ -33,14 +33,48 @@ typedef struct {
 ScreenPixel renderer_screengrid[GLOBAL_SCREEN_HEIGHT][GLOBAL_SCREEN_WIDTH];
 
 void renderer_set_pixel(int x, int y) {
-    ScreenPixel temp_pixel = {'#', "\x1b[37m", "\x1b[45m"};
+    ScreenPixel temp_pixel = {'*', "\x1b[35m", "\x1b[47m"};
     renderer_screengrid[y][x] = temp_pixel;
 }
 
 void renderer_set_pixel_earth(int x, int y) {
-    ScreenPixel temp_pixel = {'#', "\x1b[32m", "\x1b[46m"};
+    ScreenPixel temp_pixel = {'.', "\x1b[32m", "\x1b[44m"};
     renderer_screengrid[y][x] = temp_pixel;
 }
+
+// from_y has to be a lower value than to_y
+void renderer_draw_line_vertical(int from_x, int from_y, int to_y) {
+	for (int i = 0; i < to_y-from_y; i++) {
+		ScreenPixel temp_pixel = {'|', "\x1b[37m", "\x1b[40m"};
+    	renderer_screengrid[from_y+i][from_x] = temp_pixel;
+	}
+}
+
+// from_x has to be a lower value than to_x
+void renderer_draw_line_horizontal(int from_x, int from_y, int to_x) {
+	for (int i = 0; i < to_x-from_x; i++) {
+		ScreenPixel temp_pixel = {'-', "\x1b[37m", "\x1b[40m"};
+    	renderer_screengrid[from_y][from_x+i] = temp_pixel;
+	}
+}
+
+void renderer_draw_circle(int input_x, int input_y, int radius) {
+	for (int y=-radius; y<=radius; y++) {
+		for(int x=-radius; x<=radius; x++) {
+			if(x*x+y*y <= radius*radius) {
+				renderer_set_pixel_earth(x + input_x, y + input_y);
+			}
+		}
+	}
+}
+
+void renderer_draw_text(char string[], int x, int y) {
+	for (int i = 0; i < strlen(string); i++) {
+		ScreenPixel temp_pixel = {string[i], "\x1b[37m", "\x1b[40m"};
+    	renderer_screengrid[y][x+i] = temp_pixel;
+	}
+}
+
 
 /* Much faster and does not require iteration */
 void renderer_terminalclear_internal() {

@@ -26,6 +26,10 @@ void renderer_initialize();
 int renderer_render_screen();
 void renderer_set_pixel(int x, int y);
 void renderer_set_pixel_earth(int x, int y);
+void renderer_draw_circle(int input_x, int input_y, int radius);
+void renderer_draw_line_vertical(int from_x, int from_y, int to_y);
+void renderer_draw_line_horizontal(int from_x, int from_y, int to_x);
+void renderer_draw_text(char string[], int x, int y);
 
 int space_start();
 

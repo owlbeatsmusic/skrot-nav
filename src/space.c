@@ -107,16 +107,21 @@ int space_start() {
     //renderer_set_pixel(earth_pos.x + GLOBAL_SCREEN_WIDTH / 4, earth_pos.z +  + GLOBAL_SCREEN_HEIGHT / 2);
     //renderer_set_pixel(earth_pos.x + 3 * GLOBAL_SCREEN_WIDTH / 4, earth_pos.z +  + GLOBAL_SCREEN_HEIGHT / 2);
     
-    int radius = (int)((6371000 / (float)20000000) * GLOBAL_SCREEN_WIDTH/2);
-    for (int i = 0; i < 2; i++) {
-        for (int y=-radius; y<=radius; y++) {
-            for(int x=-radius; x<=radius; x++) {
-                if(x*x+y*y <= radius*radius) {
-                    renderer_set_pixel_earth(x + GLOBAL_SCREEN_WIDTH / 4, y + GLOBAL_SCREEN_HEIGHT / 2);
-                }
-            }
-        }
-    }
+    //xz visual
+    int earth_radius = (int)((6371000 / (float)20000000) * GLOBAL_SCREEN_WIDTH/2);
+    renderer_draw_circle(GLOBAL_SCREEN_WIDTH / 4, GLOBAL_SCREEN_HEIGHT / 2, earth_radius);
+    renderer_draw_line_vertical(1, 1, GLOBAL_SCREEN_HEIGHT-2);
+    renderer_draw_text("z", 2, 1);
+    renderer_draw_line_horizontal(2, GLOBAL_SCREEN_HEIGHT-2, GLOBAL_SCREEN_WIDTH/2-4);
+    renderer_draw_text("x", GLOBAL_SCREEN_WIDTH/2-5, GLOBAL_SCREEN_HEIGHT-3);
+
+    //xy visual
+    renderer_draw_circle(1 + 3*GLOBAL_SCREEN_WIDTH / 4, GLOBAL_SCREEN_HEIGHT / 2, earth_radius);
+    renderer_draw_line_vertical(GLOBAL_SCREEN_WIDTH/2+1, 1, GLOBAL_SCREEN_HEIGHT-2);
+    renderer_draw_text("y", GLOBAL_SCREEN_WIDTH/2+2, 1);
+    renderer_draw_line_horizontal(GLOBAL_SCREEN_WIDTH/2+2, GLOBAL_SCREEN_HEIGHT-2, GLOBAL_SCREEN_WIDTH-4);
+    renderer_draw_text("x", GLOBAL_SCREEN_WIDTH-5, GLOBAL_SCREEN_HEIGHT-3);
+
 
     // Simulate for a certain number of steps
     int steps = 1000000000;
@@ -134,7 +139,7 @@ int space_start() {
         int xz_renderer_y = (int)((debris.position.z / (float)20000000) * GLOBAL_SCREEN_HEIGHT) + GLOBAL_SCREEN_HEIGHT / 2;
         renderer_set_pixel(xz_renderer_x, xz_renderer_y);
 
-        int xy_renderer_x = (int)((debris.position.x / (float)20000000) * GLOBAL_SCREEN_WIDTH/2) + 3*GLOBAL_SCREEN_WIDTH / 4;
+        int xy_renderer_x = 1 + (int)((debris.position.x / (float)20000000) * GLOBAL_SCREEN_WIDTH/2) + 3*GLOBAL_SCREEN_WIDTH / 4;
         int xy_renderer_y = (int)((debris.position.y / (float)20000000) * GLOBAL_SCREEN_HEIGHT) + GLOBAL_SCREEN_HEIGHT / 2;
         renderer_set_pixel(xy_renderer_x, xy_renderer_y);
 
