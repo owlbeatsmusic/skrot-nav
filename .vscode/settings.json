@@ -1,0 +1,8 @@
+{
+    "files.associations": {
+        "skrot-nav.h": "c",
+        "global.h": "c",
+        "__node_handle": "c",
+        "log.h": "c"
+    }
+}
