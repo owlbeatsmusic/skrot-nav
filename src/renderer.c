@@ -23,6 +23,8 @@ const char COLORCODE_BG_WHITE[]   = "\x1b[47m";
 const int GLOBAL_SCREEN_WIDTH  = 100;
 const int GLOBAL_SCREEN_HEIGHT = 50;
 
+const int RENDERER_SPACE_WIDTH = 20000000;
+
 typedef struct {
 	char symbol;
 	char fg_color[8];
@@ -31,6 +33,10 @@ typedef struct {
 } ScreenPixel;
 
 ScreenPixel renderer_screengrid[GLOBAL_SCREEN_HEIGHT][GLOBAL_SCREEN_WIDTH];
+
+
+
+// DRAW FUNCTIONS
 
 void renderer_set_pixel(int x, int y) {
     ScreenPixel temp_pixel = {'*', "\x1b[35m", "\x1b[47m"};
@@ -75,6 +81,26 @@ void renderer_draw_text(char string[], int x, int y) {
 	}
 }
 
+void renderer_draw_orbitview(int x, int y, int width, int height, char x_axis_symbol, char y_axis_symbol) {
+	int earth_radius = (int)((6371000 / (float)20000000) * GLOBAL_SCREEN_WIDTH/2);
+    renderer_draw_circle(x+width/2, y+height/2, earth_radius);
+    renderer_draw_line_vertical(x, y, height-1);
+    renderer_draw_text(&x_axis_symbol, x+1, y);
+    renderer_draw_line_horizontal(x+1, y+height-2, width);
+    renderer_draw_text(&y_axis_symbol, x+width-1, height-1);
+}
+
+
+
+
+// CORE RENDERER FUNCTIONS
+
+// TODO: vad fan gör den här funktionen här egentligen?
+void renderer_fullstrcpy(char dest[], const char source[], int dest_arry_size) {
+	for (int i = 0; i < dest_arry_size; i++) {
+		dest[i] = source[i];
+	}
+}
 
 /* Much faster and does not require iteration */
 void renderer_terminalclear_internal() {
@@ -84,13 +110,6 @@ void renderer_terminalclear_internal() {
 /* Just places cursor, use printf after this function */
 void renderer_gotoxy_internal(int x, int y) {
 	printf("\033[%d;%dH", y, x);
-}
-
-// TODO: vad fan gör den här funktionen här egentligen?
-void renderer_fullstrcpy(char dest[], const char source[], int dest_arry_size) {
-	for (int i = 0; i < dest_arry_size; i++) {
-		dest[i] = source[i];
-	}
 }
 
 void renderer_screenclear_internal() {
@@ -121,4 +140,13 @@ void renderer_initialize() {
 	renderer_screenclear_internal();
 	renderer_render_screen();
     printf("%s", COLORCODE_DEFAULT);
+}
+
+
+
+
+// RENDERER CALCULATIONS
+
+int renderer_convert_to_screen_coord(int coord, int offset) {
+	return (int)((coord / (float)RENDERER_SPACE_WIDTH) * GLOBAL_SCREEN_WIDTH/2) + offset;
 }

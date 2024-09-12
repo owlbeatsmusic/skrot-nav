@@ -4,15 +4,14 @@
 #include <stdlib.h>
 
 #include "global.h"
-#include "awlib_log/log.h"
+//#include "awlib_log/log.h"
 
 /*   VARIABLES   */
 
 const float G =  6.67e-11;
 const float M = 5.977e24;
-const float DELTA_T = 0.001;
+const float DELTA_T = 0.01;
 const float EARTH_RADIUS = 6371000;
-
 
 typedef struct {
     float x;
@@ -28,6 +27,7 @@ typedef struct {
     float mass; 
 } SpaceObject;
 
+int space_object_ammount = 2000;
 SpaceObject space_objects[24576];
 
 
@@ -68,6 +68,7 @@ Vector3 gravitational_force(SpaceObject obj) {
 }
 
 // Update position and velocity of the space object
+// eulers method
 void update_space_object(SpaceObject *obj) {
     // Compute gravitational force acting on the object
     Vector3 force = gravitational_force(*obj);
@@ -77,13 +78,17 @@ void update_space_object(SpaceObject *obj) {
         force.x / obj->mass,
         force.y / obj->mass,
         force.z / obj->mass
-    };      
+    };
 
+
+    // Update postition (s = s + v * dt) formelsamling s.44
+    // DE: s(t + dt) = s(t) + s'(t) * dt  
     obj->position.x += obj->velocity.x * DELTA_T;
     obj->position.y += obj->velocity.y * DELTA_T;
     obj->position.z += obj->velocity.z * DELTA_T;
 
     // Update velocity (v = v + a * dt) formelsamling s.44
+    // DE: s'(t + dt) = s'(t) + s''(t) * dt
     obj->velocity.x += acceleration.x * DELTA_T;
     obj->velocity.y += acceleration.y * DELTA_T;
     obj->velocity.z += acceleration.z * DELTA_T;
@@ -92,67 +97,58 @@ void update_space_object(SpaceObject *obj) {
 
 int space_start() {
 
-    // exmaple object    
-    float orbital_radius = EARTH_RADIUS + 1000000;
-    SpaceObject debris;
-    debris.position = (Vector3){0, 100000, orbital_radius};
-    debris.velocity = (Vector3){sqrt(G * M / orbital_radius), -1000, 0};
-    debris.mass = 10;  // 20 kg
-
-    /* for (int i = 0; i < 1000; i++) {
-        SpaceObject temp_space_object = {(Vector3){0, 0, 1000000}, (Vector3){rand() % 7000, rand() % 7000, rand() % 7000}, 0.5};
+    // generate space debris
+    for (int i = 0; i < space_object_ammount; i++) {
+        int orbit_radius_x = 0;
+        int orbit_radius_y = 0;
+        int orbit_radius_z = 0;
+        SpaceObject temp_space_object = {
+            (Vector3){
+                orbit_radius_x, 
+                orbit_radius_y, 
+                orbit_radius_z},                   // TODO : random runt hela jorden skrot med rätt hastighet - hjälp.
+            (Vector3){
+                0, //random_direction[2]*sqrt(G * M / (1+random_direction[2])), 
+                0, //random_direction[0]*sqrt(G * M / (1+random_direction[0])), 
+                0},//random_direction[1]*sqrt(G * M / (1+random_direction[1]))}, 
+            0.5};
         space_objects[i] = temp_space_object;
-    } */
+    }
 
-    //renderer_set_pixel(earth_pos.x + GLOBAL_SCREEN_WIDTH / 4, earth_pos.z +  + GLOBAL_SCREEN_HEIGHT / 2);
-    //renderer_set_pixel(earth_pos.x + 3 * GLOBAL_SCREEN_WIDTH / 4, earth_pos.z +  + GLOBAL_SCREEN_HEIGHT / 2);
-    
-    //xz visual
-    int earth_radius = (int)((6371000 / (float)20000000) * GLOBAL_SCREEN_WIDTH/2);
-    renderer_draw_circle(GLOBAL_SCREEN_WIDTH / 4, GLOBAL_SCREEN_HEIGHT / 2, earth_radius);
-    renderer_draw_line_vertical(1, 1, GLOBAL_SCREEN_HEIGHT-2);
-    renderer_draw_text("z", 2, 1);
-    renderer_draw_line_horizontal(2, GLOBAL_SCREEN_HEIGHT-2, GLOBAL_SCREEN_WIDTH/2-4);
-    renderer_draw_text("x", GLOBAL_SCREEN_WIDTH/2-5, GLOBAL_SCREEN_HEIGHT-3);
+    //xz view
+    renderer_draw_orbitview(0, 0, GLOBAL_SCREEN_WIDTH/2, GLOBAL_SCREEN_HEIGHT, 'x', 'z');
 
-    //xy visual
-    renderer_draw_circle(1 + 3*GLOBAL_SCREEN_WIDTH / 4, GLOBAL_SCREEN_HEIGHT / 2, earth_radius);
-    renderer_draw_line_vertical(GLOBAL_SCREEN_WIDTH/2+1, 1, GLOBAL_SCREEN_HEIGHT-2);
-    renderer_draw_text("y", GLOBAL_SCREEN_WIDTH/2+2, 1);
-    renderer_draw_line_horizontal(GLOBAL_SCREEN_WIDTH/2+2, GLOBAL_SCREEN_HEIGHT-2, GLOBAL_SCREEN_WIDTH-4);
-    renderer_draw_text("x", GLOBAL_SCREEN_WIDTH-5, GLOBAL_SCREEN_HEIGHT-3);
-
+    //xy view
+    renderer_draw_orbitview(GLOBAL_SCREEN_WIDTH / 2, 0, GLOBAL_SCREEN_WIDTH/2, GLOBAL_SCREEN_HEIGHT, 'x', 'y');
 
     // Simulate for a certain number of steps
-    int steps = 1000000000;
+    int steps = 100000;
     for (int step = 1; step < steps; step++) {
 
-        // update
-        update_space_object(&debris);
-        if (step % 10000000 == 1) {
-            renderer_render_screen();
+        // update views each X ammount of steps
+        if (step % 1000 == 1) {
+            renderer_render_screen(); 
             printf("time passed=%fh\n", step * DELTA_T / 3600);
         }
 
-        // render
-        int xz_renderer_x = (int)((debris.position.x / (float)20000000) * GLOBAL_SCREEN_WIDTH/2) + GLOBAL_SCREEN_WIDTH / 4;
-        int xz_renderer_y = (int)((debris.position.z / (float)20000000) * GLOBAL_SCREEN_HEIGHT) + GLOBAL_SCREEN_HEIGHT / 2;
-        renderer_set_pixel(xz_renderer_x, xz_renderer_y);
+        // update all space objects positions
+        for (int i = 0; i < space_object_ammount; i++) {
 
-        int xy_renderer_x = 1 + (int)((debris.position.x / (float)20000000) * GLOBAL_SCREEN_WIDTH/2) + 3*GLOBAL_SCREEN_WIDTH / 4;
-        int xy_renderer_y = (int)((debris.position.y / (float)20000000) * GLOBAL_SCREEN_HEIGHT) + GLOBAL_SCREEN_HEIGHT / 2;
-        renderer_set_pixel(xy_renderer_x, xy_renderer_y);
-
-        //printf("x=%d, y=%d\n", renderer_x, renderer_y);
-        //printf("Step %d: Position = (%f, %f, %f) Velocity = (%f, %f, %f)\n", step,
-            //debris.position.x, debris.position.y, debris.position.z,
-            //debris.velocity.x, debris.velocity.y, debris.velocity.z);
-        /*for (int i = 0; i < 20000; i++) {
             update_space_object(&space_objects[i]);
-            //printf("Step %d: Position = (%f, %f, %f) Velocity = (%f, %f, %f)\n", step,
-            //   space_objects[i].position.x, space_objects[i].position.y, space_objects[i].position.z,
-            //   space_objects[i].velocity.x, space_objects[i].velocity.y, space_objects[i].velocity.z);
-        }*/
+         
+            // xz view
+            renderer_set_pixel(
+                renderer_convert_to_screen_coord(space_objects[i].position.x, GLOBAL_SCREEN_WIDTH / 4), 
+                renderer_convert_to_screen_coord(space_objects[i].position.z, GLOBAL_SCREEN_HEIGHT / 2)
+            );
+
+            // xz view
+            renderer_set_pixel(
+                renderer_convert_to_screen_coord(space_objects[i].position.x, 3*GLOBAL_SCREEN_WIDTH / 4), 
+                renderer_convert_to_screen_coord(space_objects[i].position.y, GLOBAL_SCREEN_HEIGHT / 2)
+            );
+        }
+
         
     }          
     renderer_render_screen(); 
@@ -161,14 +157,3 @@ int space_start() {
 
     return 0;
 }
-
-
-
-
-/*   UPDATE   */
-
-int space_tick() {
-
-    return 0;
-}
-
