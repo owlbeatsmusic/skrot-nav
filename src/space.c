@@ -132,10 +132,9 @@ int space_start() {
         // create random postions in x, y and z. Normalize and 
         // multiply by earth radius for point around sphere(earth)
         for (int i = 0; i < 3; i++) {
-            orbit_radius_xyz[i] = orbit_radius_xyz_base[i] * (1/sqrt(pow(orbit_radius_xyz_base[0], 2) + pow(orbit_radius_xyz_base[1], 2) + pow(orbit_radius_xyz_base[2], 2))) * (EARTH_RADIUS + 100000);
+            orbit_radius_xyz[i] = orbit_radius_xyz_base[i] * (1/sqrt(pow(orbit_radius_xyz_base[0], 2) + pow(orbit_radius_xyz_base[1], 2) + pow(orbit_radius_xyz_base[2], 2))) * (EARTH_RADIUS + 700000 + rand() % 1000000);
             printf("xyz=%f\n", orbit_radius_xyz_base[i]);
         }
-
 
         space_append_spaceobject(DEBRIS, (Vector3){orbit_radius_xyz[0], orbit_radius_xyz[1], orbit_radius_xyz[2]}, (Vector3){0, 0, 0}, 0.5);
         /*SpaceObject temp_space_object = {
@@ -160,32 +159,43 @@ int space_start() {
 
 
     // Simulate for a certain number of steps
-    int steps = 10000000;
-    for (int step = 1; step < steps; step++) {
+    int steps = 100000;
+    for (int step = 0; step < steps; step++) {
 
         // update views each X ammount of steps
-        if (step % 1000 == 1) {
+        if ((step) % 10000 == 1) {
             renderer_render_screen(); 
-            printf("time passed=%fs\n", step * DELTA_T);
+            printf("time passed: %ds   (%fmin)   (%fh)\n", (int)(step * DELTA_T), (step * DELTA_T)/60, (step * DELTA_T)/3600);
+            printf("step: %d / %d\n", step, steps);
+            printf("\nSPACECRAFT:\n   Position = (%f, %f, %f) \n   Velocity = (%f, %f, %f)\n",
+               spaceobjects[nav_spaceobjects_index].position.x, spaceobjects[nav_spaceobjects_index].position.y, spaceobjects[nav_spaceobjects_index].position.z,
+               spaceobjects[nav_spaceobjects_index].velocity.x, spaceobjects[nav_spaceobjects_index].velocity.y, spaceobjects[nav_spaceobjects_index].velocity.z);
         }
 
-        // update all space objects positions
         for (int i = 0; i < spaceobject_ammount; i++) {
 
+            // update spaceobject's positions
             update_space_object(&spaceobjects[i]);
-         
-            // xz view
-            renderer_set_pixel(
-                renderer_convert_to_screen_coord(spaceobjects[i].position.x, RENDERER_SCREEN_WIDTH / 4), 
-                renderer_convert_to_screen_coord(spaceobjects[i].position.z, RENDERER_SCREEN_HEIGHT / 2)
-            );
 
-            // xy view
-            renderer_set_pixel(
-                renderer_convert_to_screen_coord(spaceobjects[i].position.x, 3*RENDERER_SCREEN_WIDTH / 4), 
-                renderer_convert_to_screen_coord(spaceobjects[i].position.y, RENDERER_SCREEN_HEIGHT / 2)
-            );
+
+            // update screen information
+            int screen_xz_x = renderer_convert_to_screen_coord(spaceobjects[i].position.x, RENDERER_SCREEN_WIDTH / 4); 
+            int screen_xz_y = renderer_convert_to_screen_coord(spaceobjects[i].position.z, RENDERER_SCREEN_HEIGHT / 2); 
+
+            int screen_xy_x = renderer_convert_to_screen_coord(spaceobjects[i].position.x, 3*RENDERER_SCREEN_WIDTH / 4);
+            int screen_xy_y = renderer_convert_to_screen_coord(spaceobjects[i].position.y, RENDERER_SCREEN_HEIGHT / 2); 
+
+            if (spaceobjects[i].type == SPACECRAFT) {
+                renderer_set_pixel_spacecraft(screen_xz_x, screen_xz_y);
+                renderer_set_pixel_spacecraft(screen_xy_x, screen_xy_y);
+            }
+            else {
+                renderer_set_pixel(screen_xz_x, screen_xz_y);
+                renderer_set_pixel(screen_xy_x, screen_xy_y);
+            }
         }
+
+        usleep(100);
     }          
     
     renderer_render_screen(); 

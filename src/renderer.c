@@ -34,7 +34,6 @@ typedef struct {
 	char symbol;
 	char fg_color[8];
 	char bg_color[8];
-	int id;
 } ScreenPixel;
 
 ScreenPixel renderer_screengrid[RENDERER_SCREEN_HEIGHT][RENDERER_SCREEN_WIDTH];
@@ -50,6 +49,11 @@ void renderer_set_pixel(int x, int y) {
 
 void renderer_set_pixel_earth(int x, int y) {
     ScreenPixel temp_pixel = {'.', "\x1b[32m", "\x1b[44m"};
+    renderer_screengrid[y][x] = temp_pixel;
+}
+
+void renderer_set_pixel_spacecraft(int x, int y) {
+    ScreenPixel temp_pixel = {'o', "\x1b[33m", "\x1b[41m"};
     renderer_screengrid[y][x] = temp_pixel;
 }
 
