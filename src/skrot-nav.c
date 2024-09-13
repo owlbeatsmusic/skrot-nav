@@ -1,6 +1,7 @@
+#include <stdio.h>
+#include "global.h"
 
-/*   SPACECRAFT DETAIL   */
-
-float mass = 25;
-float max_debris_diameter = 0.5; 
-
+int nav_create() {
+    
+    return 0;
+}
