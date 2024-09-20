@@ -25,35 +25,36 @@ const char COLORCODE_BG_CYAN[]    = "\x1b[46m";
 const char COLORCODE_FG_WHITE[]   = "\x1b[37m";
 const char COLORCODE_BG_WHITE[]   = "\x1b[47m";
 
-const int RENDERER_SCREEN_WIDTH  = 100;
+const int RENDERER_SCREEN_WIDTH  = 150;
 const int RENDERER_SCREEN_HEIGHT = 50;
+
+const int RENDERER_ORBIT_VIEW_WIDTH = 50;
+const int RENDERER_ORBIT_VIEW_HEIGHT = 50;
 
 const int RENDERER_SPACE_WIDTH = 20000000;
 
-typedef struct {
-	char symbol;
-	char fg_color[8];
-	char bg_color[8];
-} ScreenPixel;
-
 ScreenPixel renderer_screengrid[RENDERER_SCREEN_HEIGHT][RENDERER_SCREEN_WIDTH];
 
+View renderer_views[] = {
+	{0, 0, -1, RENDERER_SPACE_WIDTH/2, 'x', 'z'}, // 5000000
+	{1, 0, -1, RENDERER_SPACE_WIDTH, 'x', 'z'},
+	{2, 0, -1, RENDERER_SPACE_WIDTH, 'x', 'y'},
+};
+
+const ScreenPixel renderer_spaceobject_type_color[] = {
+	{'*', "\x1b[35m", "\x1b[47m"}, // DEBRIS
+	{'o', "\x1b[33m", "\x1b[41m"}  // SPACECRAFT
+};
 
 
 /*      DRAW FUNCTIONS     */
 
-void renderer_set_pixel(int x, int y) {
-    ScreenPixel temp_pixel = {'*', "\x1b[35m", "\x1b[47m"};
-    renderer_screengrid[y][x] = temp_pixel;
-}
-
-void renderer_set_pixel_earth(int x, int y) {
-    ScreenPixel temp_pixel = {'.', "\x1b[32m", "\x1b[44m"};
-    renderer_screengrid[y][x] = temp_pixel;
-}
-
-void renderer_set_pixel_spacecraft(int x, int y) {
-    ScreenPixel temp_pixel = {'o', "\x1b[33m", "\x1b[41m"};
+void renderer_set_pixel(int x, int y, char symbol, char fg_color[], char bg_color[]) {
+    ScreenPixel temp_pixel;
+	temp_pixel.symbol = symbol;
+	strcpy(temp_pixel.fg_color, fg_color);
+	strcpy(temp_pixel.bg_color, bg_color);
+	if (x >= RENDERER_SCREEN_WIDTH | y >= RENDERER_SCREEN_HEIGHT | x < 0 | y < 0) return;
     renderer_screengrid[y][x] = temp_pixel;
 }
 
@@ -77,7 +78,7 @@ void renderer_draw_circle(int input_x, int input_y, int radius) {
 	for (int y=-radius; y<=radius; y++) {
 		for(int x=-radius; x<=radius; x++) {
 			if(x*x+y*y <= radius*radius) {
-				renderer_set_pixel_earth(x + input_x, y + input_y);
+				renderer_set_pixel(x + input_x, y + input_y, '.', "\x1b[32m", "\x1b[44m");
 			}
 		}
 	}
@@ -90,16 +91,37 @@ void renderer_draw_text(char string[], int x, int y) {
 	}
 }
 
-void renderer_draw_orbitview(int x, int y, int width, int height, char x_axis_symbol, char y_axis_symbol) {
-	int earth_radius = (int)((6371000 / (float)20000000) * RENDERER_SCREEN_WIDTH/2);
-    renderer_draw_circle(x+width/2, y+height/2, earth_radius);
-    renderer_draw_line_vertical(x, y, height-1);
-    renderer_draw_text(&x_axis_symbol, x+1, y);
-    renderer_draw_line_horizontal(x+1, y+height-2, width);
-    renderer_draw_text(&y_axis_symbol, x+width-1, height-1);
+void renderer_draw_orbitview(int x, int y, int width, int height, int scale, char x_axis_symbol, char y_axis_symbol) {
+	//int earth_radius = renderer_convert_to_screen_coord(6371000, scale, 0);
+    //renderer_draw_circle(x+width/2, y+height/2, earth_radius);
+    renderer_draw_line_vertical(x, y, y+height);
+    renderer_set_pixel(x+1, y, y_axis_symbol, "\x1b[37m", "\x1b[40m");
+    renderer_draw_line_horizontal(x+1, y+height-1, x+width);
+	renderer_set_pixel(x+width-1, height-2, x_axis_symbol, "\x1b[37m", "\x1b[40m");
 }
 
+void renderer_render_all_views() {
+	for (int i = 0; i < sizeof(renderer_views)/sizeof(renderer_views[0]); i++) {
+		//int earth_radius = renderer_convert_to_screen_coord(6371000, renderer_views[i].scale, 0);
+        //renderer_draw_circle(/2, y+height/2, earth_radius);
+		renderer_draw_orbitview(
+			RENDERER_ORBIT_VIEW_WIDTH*renderer_views[i].view_x, 
+			RENDERER_ORBIT_VIEW_HEIGHT*renderer_views[i].view_y, 
+			RENDERER_ORBIT_VIEW_WIDTH, 
+			RENDERER_ORBIT_VIEW_HEIGHT, 
+			renderer_views[i].scale,
+			renderer_views[i].x_axis_symbol, 
+			renderer_views[i].y_axis_symbol
+		);
+	}
 
+
+	// XZ
+	//renderer_draw_orbitview(RENDERER_ORBIT_VIEW_WIDTH, 0, RENDERER_ORBIT_VIEW_WIDTH, RENDERER_ORBIT_VIEW_HEIGHT, 'x', 'z');
+
+	// XZ
+    //renderer_draw_orbitview(2*RENDERER_ORBIT_VIEW_WIDTH, 0, RENDERER_ORBIT_VIEW_WIDTH, RENDERER_ORBIT_VIEW_HEIGHT, 'x', 'y');
+}
 
 
 /*     CORE RENDERER FUNCTIONS    */
@@ -147,7 +169,7 @@ int renderer_render_screen() {
 
 void renderer_initialize() {
 	renderer_screenclear_internal();
-	renderer_render_screen();
+	//renderer_render_screen();
     printf("%s", COLORCODE_DEFAULT);
 }
 
@@ -156,6 +178,6 @@ void renderer_initialize() {
 
 /*     RENDERER CALCULATIONS     */
 
-int renderer_convert_to_screen_coord(int coord, int offset) {
-	return (int)((coord / (float)RENDERER_SPACE_WIDTH) * RENDERER_SCREEN_WIDTH/2) + offset;
+int renderer_convert_to_screen_coord(int coord, int scale, int offset) {
+	return (int)((coord / (float)scale) * RENDERER_ORBIT_VIEW_WIDTH) + offset;
 }
