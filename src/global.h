@@ -39,6 +39,8 @@ typedef struct {
     float mass; 
 } SpaceObject;
 
+float space_distance(Vector3 a, Vector3 b);
+
 int space_append_spaceobject(SpaceObjectType type, Vector3 position, Vector3 velocity, float mass);
 
 int space_start();

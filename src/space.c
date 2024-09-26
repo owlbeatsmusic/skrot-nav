@@ -39,7 +39,7 @@ int space_append_spaceobject(SpaceObjectType type, Vector3 position, Vector3 vel
             position.z},
         (Vector3){
             velocity.x,  //random_direction[2]*sqrt(G * M / (1+random_direction[2])), 
-            velocity.y,  //sqrt(G * M / (1+orbit_radius_xyz[1])),  //random_direction[0]*sqrt(G * M / (1+random_direction[0])), 
+            velocity.y,   //sqrt(G * M / (1+orbit_radius_xyz[1])),  //random_direction[0]*sqrt(G * M / (1+random_direction[0])), 
             velocity.z} ,//sqrt(G * M / (1+orbit_radius_xyz[0]))}, //random_direction[1]*sqrt(G * M / (1+random_direction[1]))}, 
         mass
     };
@@ -53,14 +53,14 @@ int space_append_spaceobject(SpaceObjectType type, Vector3 position, Vector3 vel
 /*   CALCULATIONS    */
 
 // Compute distance between two points in 3D space
-float distance(Vector3 a, Vector3 b) {
+float space_distance(Vector3 a, Vector3 b) {
     return sqrt(pow(b.x - a.x, 2) + pow(b.y - a.y, 2) + pow(b.z - a.z, 2));
 }
 
 // Compute gravitational force vector acting on object due to Earth
 Vector3 gravitational_force(SpaceObject obj) {
     Vector3 force;
-    float r = distance(obj.position, earth_pos);
+    float r = space_distance(obj.position, earth_pos);
     
     // Calculate the magnitude of the gravitational force (magnitude meaning size / strength)
     //               = "size / length"
@@ -162,7 +162,7 @@ int space_start() {
     for (int step = 0; step < steps; step++) {
 
         // update views each X ammount of steps
-        if ((step) % 10000 == 1) {
+        if ((step) % 100 == 1) {
             renderer_render_screen(); 
             renderer_initialize();
 
