@@ -158,7 +158,7 @@ int space_start() {
     //renderer_draw_orbitview(2*RENDERER_ORBIT_VIEW_WIDTH, 0, RENDERER_ORBIT_VIEW_WIDTH, RENDERER_ORBIT_VIEW_HEIGHT, 'x', 'y');
 
     // Simulate for a certain number of steps
-    int steps = 1000000;
+    int steps = 1;
     for (int step = 0; step < steps; step++) {
 
         // update views each X ammount of steps
