@@ -85,7 +85,7 @@ Vector3 gravitational_force(SpaceObject obj) {
 
 // Update position and velocity of the space object
 // eulers method
-void update_space_object(SpaceObject *obj) {
+void update_space_object_internal(SpaceObject *obj) {
     // Compute gravitational force acting on the object
     Vector3 force = gravitational_force(*obj);
     
@@ -178,7 +178,7 @@ int space_start() {
         for (int i = 0; i < spaceobject_ammount; i++) {
 
             // update spaceobject's positions
-            update_space_object(&spaceobjects[i]);
+            update_space_object_internal(&spaceobjects[i]);
 
   
             // update screen information
