@@ -72,13 +72,44 @@ typedef struct {
 
 typedef struct {
     Device d;  
+    int size;
+} SolarPanelDevice;
+
+typedef struct {
+    Device d;  
+    int size;
 } StorageDevice;
 
 /*
     SKROT - ADD: OTHER DEVICES
 */
 
+extern int devices_radar_poweron();
+extern int devices_radar_shutdown();
 extern int devices_radar_scan(RadarDevice *radar);
+
+extern int devices_lidar_poweron();
+extern int devices_lidar_shutdown();
+extern int devices_lidar_scan(LidarDevice *lidar);
+
+extern int devices_camera_poweron();
+extern int devices_camera_shutdown();
+extern int devices_camera_scan(CameraDevice *camera);
+
+extern int devices_claw_poweron();
+extern int devices_claw_shutdown();
+extern int devices_claw_grab(ClawDevice *claw);
+
+extern int devices_battery_status();
+
+extern int devices_solarpanel_poweron();
+extern int devices_solarpanel_shutdown();
+extern int devices_solarpanel_status();
+
+extern int energy_adjust_solar_panels(Vector3 current_position, Vector3 sunlight_direction);
+
+extern int devices_storage_write(StorageDevice *storage);
+extern int devices_storage_read(StorageDevice *storage);
 
 
 

@@ -58,7 +58,7 @@ float space_distance(Vector3 a, Vector3 b) {
 }
 
 // Compute gravitational force vector acting on object due to Earth
-Vector3 gravitational_force(SpaceObject obj) {
+Vector3 gravitational_force_internal(SpaceObject obj) {
     Vector3 force;
     float r = space_distance(obj.position, earth_pos);
     
@@ -87,7 +87,7 @@ Vector3 gravitational_force(SpaceObject obj) {
 // eulers method
 void update_space_object_internal(SpaceObject *obj) {
     // Compute gravitational force acting on the object
-    Vector3 force = gravitational_force(*obj);
+    Vector3 force = gravitational_force_internal(*obj);
     
     // (F = ma)
     Vector3 acceleration = {
@@ -158,7 +158,7 @@ int space_start() {
     //renderer_draw_orbitview(2*RENDERER_ORBIT_VIEW_WIDTH, 0, RENDERER_ORBIT_VIEW_WIDTH, RENDERER_ORBIT_VIEW_HEIGHT, 'x', 'y');
 
     // Simulate for a certain number of steps
-    int steps = 1;
+    int steps = 50000;
     for (int step = 0; step < steps; step++) {
 
         // update views each X ammount of steps
@@ -255,7 +255,7 @@ int space_start() {
             */
         }
 
-       usleep(50);
+       usleep(100);
     }          
     
     renderer_render_screen(); 

@@ -2,19 +2,49 @@
 #include "global.h"
 
 /*
+GENERAL:
+https://science.nasa.gov/learn/basics-of-space-flight/chapter13-1/
+
 
 ENERGY:
 https://en.wikipedia.org/wiki/Solar_panels_on_spacecraft
-
-
-
 */
 
 
 int nav_spaceobjects_index = 0;
 
 
-// OBJECTS / NAVIGATION
+
+
+
+
+/*       DEVICES      */
+
+// ENERGY (power)
+
+void nav_energy_lowpower_protocol_internal() {
+    
+    return;
+}
+
+
+
+
+
+
+/*       NASA 1&3: FLIGHT PATH CONTROL      */
+
+
+// PROPULSION SYSTEM
+
+void nav_propulsion_set_destination_internal(Vector3 target) {
+
+    return;
+}
+
+
+
+// OBJECTS
 
 void nav_update_tracked_objects_internal(int spaceobjects_index) {
 
@@ -26,11 +56,12 @@ SpaceObject nav_identify_object_internal(RadarObject radar_obj) {
     return spaceobject;
 }
 
-void nav_set_destination_internal(Vector3 target) {
 
-    return;
-}
 
+
+
+
+/*       NASA 2: ACTUAL SPACECRAFT POSITION      */
 
 
 // PHSICAL CALCULATIONS
@@ -44,6 +75,8 @@ Vector3 nav_predict_future_position_internal(SpaceObject obj, float time) {
     Vector3 v3;
     return v3;
 }
+
+
 
 
 // CORE

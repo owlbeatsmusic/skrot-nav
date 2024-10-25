@@ -5,7 +5,7 @@
 
 int main() {
 
-	awlib_log_create("log.txt");
+	//awlib_log_create("log.txt");
 	printf("[SKROT-NAV - 2024]\n"); 
 	
 	renderer_initialize();
