@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <math.h>
 
-#include "global.h"
+#include "../global.h"
 
 /*
 https://sv.wikipedia.org/wiki/Radar
@@ -13,14 +13,14 @@ https://www.innosent.de/en/radar/
 
 // RADAR
 
-int devices_radar_poweron() {
+void devices_radar_poweron(RadarDevice *radar) {
 
-    return 0;
+    return;
 }
 
-int devices_radar_shutdown() {
+void devices_radar_shutdown(RadarDevice *radar) {
 
-    return 0;
+    return;
 }
 
 int devices_radar_scan(RadarDevice *radar) {
@@ -61,14 +61,14 @@ int devices_radar_scan(RadarDevice *radar) {
 
 // LIDAR
 
-int devices_lidar_poweron() {
+void devices_lidar_poweron(LidarDevice *lidar) {
 
-    return 0;
+    return;
 }
 
-int devices_lidar_shutdown() {
+void devices_lidar_shutdown(LidarDevice *lidar) {
 
-    return 0;
+    return;
 }
 
 int devices_lidar_scan(LidarDevice *lidar) {
@@ -83,14 +83,14 @@ int devices_lidar_scan(LidarDevice *lidar) {
 
 // CAMERA
 
-int devices_camera_poweron() {
+void devices_camera_poweron(CameraDevice *camera) {
 
-    return 0;
+    return;
 }
 
-int devices_camera_shutdown() {
+void devices_camera_shutdown(CameraDevice *camera) {
 
-    return 0;
+    return;
 }
 
 int devices_camera_scan(CameraDevice *camera) {
@@ -105,14 +105,14 @@ int devices_camera_scan(CameraDevice *camera) {
 
 // CLAW
 
-int devices_claw_poweron() {
+void devices_claw_poweron(ClawDevice *claw) {
 
-    return 0;
+    return;
 }
 
-int devices_claw_shutdown() {
+void devices_claw_shutdown(ClawDevice *claw) {
 
-    return 0;
+    return;
 }
 
 int devices_claw_grab(ClawDevice *claw) {
@@ -128,7 +128,7 @@ int devices_claw_grab(ClawDevice *claw) {
 // BATTERY
 
 // checks information about battery (eg: temperature)
-int devices_battery_status() {
+int devices_battery_status(BatteryDevice *battery_device) {
 
     return 0;
 }
@@ -140,22 +140,22 @@ int devices_battery_status() {
 
 // updates information about solar panel (eg: sunlight coverage)
 
-int devices_solarpanel_poweron() {
+void devices_solarpanel_poweron(SolarPanelDevice *solar_panel) {
+
+    return;
+}
+
+void devices_solarpanel_shutdown(SolarPanelDevice *solar_panel) {
+
+    return;
+}
+
+int devices_solarpanel_status(SolarPanelDevice *solar_panel) {
 
     return 0;
 }
 
-int devices_solarpanel_shutdown() {
-
-    return 0;
-}
-
-int devices_solarpanel_status() {
-
-    return 0;
-}
-
-int energy_adjust_solar_panels(Vector3 current_position, Vector3 sunlight_direction) {
+int energy_adjust_solar_panels(SolarPanelDevice *solar_panel, Vector3 current_position, Vector3 sunlight_direction) {
 
     return 0;
 }
@@ -178,4 +178,3 @@ int devices_storage_read(StorageDevice *storage) {
 
     return 0;
 } 
-

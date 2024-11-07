@@ -10,13 +10,53 @@ typedef struct {
     float z;
 } Vector3;
 
+typedef enum {
+    DEBRIS,
+    SPACECRAFT
+} SpaceObjectType;
+
+typedef struct {
+    SpaceObjectType type;
+    Vector3 position;
+    Vector3 velocity;
+    float mass; 
+    float radius;
+} SpaceObject;
+
+typedef struct {
+    u_int8_t communication_status;  // 0=offline, 1=online, 2=degraded
+
+    u_int16_t battery_level;    
+    u_int8_t battery_status;        // 0 = normal, 1 = warning, 2 = critical)
+
+    float temperature; 
+    u_int8_t thermal_status;        // 0 = normal, 1 = warning, 2 = critical)
+
+    float fuel_level;             
+    u_int8_t fuel_status;           // 0 = normal, 1 = warning, 2 = critical)
+
+    float pressure;      
+    u_int8_t pressure_status;       // 0 = normal, 1 = warning, 2 = critical)
+
+    u_int16_t radiation;        
+    u_int8_t radiation_level;       // 0 = normal, 1 = warning, 2 = critical)
+
+    u_int8_t error_code;            // if not 0, error has occoured in device / substystem
+    u_int32_t uptime;               
+
+} HealthData;
+
 
 
 /*      DEVICES      */
 
 typedef struct {
-    Vector3 offset;
-    float mass;
+    u_int16_t id;
+    HealthData health_data;
+
+    Vector3 offset; // ????? offset från vad ?
+    const float mass;    // can't be updated in space => const
+
 } Device;
 
 typedef enum {
@@ -51,6 +91,7 @@ typedef struct {
 
     float devices_radar_frequency_band; // GHz
     RadarModulationType radarModulationType;    
+
 } RadarDevice;
 
 typedef struct {
@@ -84,34 +125,56 @@ typedef struct {
     SKROT - ADD: OTHER DEVICES
 */
 
-extern int devices_radar_poweron();
-extern int devices_radar_shutdown();
+extern void devices_radar_poweron(RadarDevice *radar);
+extern void devices_radar_shutdown(RadarDevice *radar);
 extern int devices_radar_scan(RadarDevice *radar);
 
-extern int devices_lidar_poweron();
-extern int devices_lidar_shutdown();
+extern void devices_lidar_poweron(LidarDevice *lidar);
+extern void devices_lidar_shutdown(LidarDevice *lidar);
 extern int devices_lidar_scan(LidarDevice *lidar);
 
-extern int devices_camera_poweron();
-extern int devices_camera_shutdown();
+extern void devices_camera_poweron(CameraDevice *camera);
+extern void devices_camera_shutdown(CameraDevice *camera);
 extern int devices_camera_scan(CameraDevice *camera);
 
-extern int devices_claw_poweron();
-extern int devices_claw_shutdown();
+extern void devices_claw_poweron(ClawDevice *claw);
+extern void devices_claw_shutdown(ClawDevice *claw);
 extern int devices_claw_grab(ClawDevice *claw);
 
-extern int devices_battery_status();
+extern int devices_battery_status(BatteryDevice *battery);
 
-extern int devices_solarpanel_poweron();
-extern int devices_solarpanel_shutdown();
-extern int devices_solarpanel_status();
-
-extern int energy_adjust_solar_panels(Vector3 current_position, Vector3 sunlight_direction);
+extern void devices_solarpanel_poweron(SolarPanelDevice *solar_panel);
+extern void devices_solarpanel_shutdown(SolarPanelDevice *solar_panel);
+extern int devices_solarpanel_status(SolarPanelDevice *solar_panel);
+extern int energy_adjust_solar_panels(SolarPanelDevice *solar_panel, Vector3 current_position, Vector3 sunlight_direction);
 
 extern int devices_storage_write(StorageDevice *storage);
 extern int devices_storage_read(StorageDevice *storage);
 
 
+
+
+/*      SKROT-NAV       */
+
+int nav_spaceobjects_index;
+
+int nav_update(void);
+
+int nav_create(void);
+
+
+
+
+
+
+
+
+
+//----------------------------------------//
+//                                        //
+//         v     SIMULATION       v       //
+//                                        //
+//----------------------------------------//
 
 
 
@@ -122,24 +185,11 @@ extern const float M;
 extern const float DELTA_T;
 extern const float EARTH_RADIUS;
 
-typedef enum {
-    DEBRIS,
-    SPACECRAFT
-} SpaceObjectType;
-
 typedef struct {
 	char symbol;
 	char fg_color[8];
 	char bg_color[8];
 } ScreenPixel;
-
-typedef struct {
-    SpaceObjectType type;
-    Vector3 position;
-    Vector3 velocity;
-    float mass; 
-    float radius;
-} SpaceObject;
 
 extern const int MAX_SPACEOBJECTS;
 extern SpaceObject spaceobjects[];
@@ -148,7 +198,7 @@ float space_distance(Vector3 a, Vector3 b);
 
 int space_append_spaceobject(SpaceObjectType type, Vector3 position, Vector3 velocity, float mass);
 
-int space_start();
+int space_start(void);
 
 
 
@@ -188,26 +238,15 @@ void renderer_draw_line_vertical(int from_x, int from_y, int to_y);
 void renderer_draw_line_horizontal(int from_x, int from_y, int to_x);
 void renderer_draw_text(char string[], int x, int y);
 void renderer_draw_orbitview(int x, int y, int width, int height, int scale, char x_axis_symbol, char y_axis_symbol);
-void renderer_render_all_views();
+void renderer_render_all_views(void);
 
 // renderer - core functions
-void renderer_initialize();
-int  renderer_render_screen();
+void renderer_initialize(void);
+int  renderer_render_screen(void);
 
 // renderer - calculation functions
 int  renderer_convert_to_screen_coord(int coord, int scale, int offset);
 
-
-
-
-
-/*      SKROT-NAV       */
-
-int nav_spaceobjects_index;
-
-int nav_update();
-
-int nav_create();
 
 
 #endif

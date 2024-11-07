@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <string.h>
-#include "global.h"
+#include "../global.h"
 
 const char RENDERER_WARNING_PRINT[] = "[\033[0;33mwarning\033[0m]:";
 const char RENDERER_ERROR_PRINT[]   = "[\033[0;31merror\033[0m]:";
@@ -100,7 +100,7 @@ void renderer_draw_orbitview(int x, int y, int width, int height, int scale, cha
 	renderer_set_pixel(x+width-1, height-2, x_axis_symbol, "\x1b[37m", "\x1b[40m");
 }
 
-void renderer_render_all_views() {
+void renderer_render_all_views(void) {
 	for (int i = 0; i < sizeof(renderer_views)/sizeof(renderer_views[0]); i++) {
 		//int earth_radius = renderer_convert_to_screen_coord(6371000, renderer_views[i].scale, 0);
         //renderer_draw_circle(/2, y+height/2, earth_radius);
@@ -134,7 +134,7 @@ void renderer_fullstrcpy_internal(char dest[], const char source[], int dest_arr
 }
 
 /* Much faster and does not require iteration */
-void renderer_terminalclear_internal() {
+void renderer_terminalclear_internal(void) {
 	printf("\033[H\033[J");
 }
 
@@ -143,7 +143,7 @@ void renderer_gotoxy_internal(int x, int y) {
 	printf("\033[%d;%dH", y, x);
 }
 
-void renderer_screenclear_internal() {
+void renderer_screenclear_internal(void) {
 	for (int y = 0; y < RENDERER_SCREEN_HEIGHT; y++) {
 		for (int x = 0; x < RENDERER_SCREEN_WIDTH; x++) {
 			renderer_screengrid[y][x].symbol = ' ';
@@ -153,7 +153,7 @@ void renderer_screenclear_internal() {
 	}
 }
 
-int renderer_render_screen() {
+int renderer_render_screen(void) {
 	renderer_terminalclear_internal();
 	
 	for (int y = 0; y < RENDERER_SCREEN_HEIGHT; y++) {
@@ -167,7 +167,7 @@ int renderer_render_screen() {
     return 0;
 }
 
-void renderer_initialize() {
+void renderer_initialize(void) {
 	renderer_screenclear_internal();
 	//renderer_render_screen();
     printf("%s", COLORCODE_DEFAULT);

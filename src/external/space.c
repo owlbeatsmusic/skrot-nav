@@ -4,7 +4,7 @@
 #include <math.h>
 #include <time.h>
 
-#include "global.h"
+#include "../global.h"
 
 
 
@@ -21,12 +21,13 @@ int spaceobject_ammount = 100;
 const int MAX_SPACEOBJECTS = 24576;
 SpaceObject spaceobjects[MAX_SPACEOBJECTS];
 
+
 // create spaceobject at first available index in spaceobjects[]
 // returns index of object
 int space_append_spaceobject(SpaceObjectType type, Vector3 position, Vector3 velocity, float mass) {
     int empty_index = 0;
     int i = 0;
-    while (spaceobjects[i].mass != 0) {
+    while (spaceobjects[i].mass != 0) { // TODO: does not comply with LOC-2 
         if (i >= MAX_SPACEOBJECTS) return -1;
         i++;
     }
@@ -49,7 +50,7 @@ int space_append_spaceobject(SpaceObjectType type, Vector3 position, Vector3 vel
 
 
 
-
+        
 /*   CALCULATIONS    */
 
 // Compute distance between two points in 3D space
@@ -116,7 +117,7 @@ void update_space_object_internal(SpaceObject *obj) {
 
 /*      CORE FUNCTIONS      */
 
-int space_start() {
+int space_start(void) {
 
     srand(time(NULL));
 
@@ -262,6 +263,3 @@ int space_start() {
     
     return 0;
 }
-
-
-
