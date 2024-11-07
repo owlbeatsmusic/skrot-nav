@@ -9,10 +9,15 @@ A navigationsystem for a debris-collecting spacecraft with device interaction, p
  - **Navigationsystem** 
     -  Deivce interaction
 
+
 ### How to use
 Some of the code is meant to be reimplemented when the code is used in real space, eg. device-simulations used to demonstrate and test the program.
 
+
 ## Navigation System
+
+Flight path control, object detection and communication.
+
 
 ## Space Simulation
 
