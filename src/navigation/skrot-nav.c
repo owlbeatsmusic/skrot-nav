@@ -1,6 +1,10 @@
 // This code is for the CDS (command and data subsystem)
 
+#include <time.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
 #include "../global.h"
 
 /*
@@ -12,104 +16,26 @@ ENERGY:
 https://en.wikipedia.org/wiki/Solar_panels_on_spacecraft
 */
 
-
 typedef struct {
     FILE *file;
 } SpacecraftEvent;
-SpacecraftEvent spacecraft_sequence_of_events[1024];
 
-typedef enum {
-    COMMAND,
-    NAVIGATION,
-    TELEMETRY
-    // TODO: add more
-} DataPacketType;
+char *data_packet_type_label[] = {
+    "COMMAND",
+    "NAVIGATION",
+    "TELEMETRY",
 
-typedef struct { 
-    DataPacketType data_packet_type;
-    u_int32_t packet_timestamp;            // time of packet creation  
-    u_int32_t meassurement_timestamp;      // time of eg. angle observation
-    u_int16_t packet_id;            // unique for all packets
-    u_int16_t source_id;            // from which system / subsystem (/device)
-    u_int16_t data_length;     
-    u_int16_t sequence_number;      // if multiple packets, which order
-    char general_data[512];
-
-    // COMMAND
-    FILE *SEF_file;             // SEquence of Events
-
-    // NAVIGATION
-    int observation_latitude;
-    int observation_longitude;
-    int observation_altitude;
-    u_int32_t distance; 
-    int radial_velocity;        // from/towards earth
-    int azimuth_angle;          // on earth sky
-    int elevation_angle;        // on earth sky
-
-} CommunicationDataPacket;
-
-
+    "DEBRIS_STATUS",
+    "HEALTH_STATUS"
+};
 
 u_int32_t sclk = 0; // clock
+
+SpacecraftEvent spacecraft_sequence_of_events[1024];
 
 float current_delta_velocity;
 Vector3 last_mathematical_position;   
 Vector3 last_observed_position; 
-
-
-/*       OTHER: DEVICE INTERACTION      */
-
-int nav_run_telemetry_analysis(void) { // create HealthData
-
-    // check all devices, create healthdata reports and save and continue if error occoured or any critical levels.
-
-
-    return 0;
-}
-
-int nav_anomalie_found_protocol(HealthData health_data) { // from CDS(this) or other FP(fault protection) algorithms or downlink
-    
-    // eg. termniate device processes
-
-    return 0;
-}
-
-int nav_enter_safing(void) {
-
-    // types:
-    // - simple; baseline safing instructions read from ROM
-    // - complex; in CDS RAM, can be updated
-
-    return 0;
-}
-
-// TODO : implement CLT (https://science.nasa.gov/learn/basics-of-space-flight/chapter11-1/)
-
-
-void nav_energy_lowpower_protocol_internal(void) {
-    
-    return;
-}
-
-
-int nav_communication_assemble_packet(void) {
-
-    // eg. compression
-
-    return 0;
-}
-
-int nav_communication_store_packet(CommunicationDataPacket *comm_data_packet) {
-
-    return 0;
-}
-
-int nav_communication_send_packet(CommunicationDataPacket *comm_data_packet) { // send to transmitter
-
-    return 0;
-}
-
 
 
 
@@ -151,7 +77,7 @@ SpaceObject nav_identify_object_internal(RadarObject radar_obj) {
 
 // COMMUNICATION
 
-int nav_communication_receive_spacecraft_event_file(FILE *SEF_file) {
+int nav_communication_parse_event_file(FILE *SEF_file) {
 
     return 0;
 }
@@ -204,6 +130,97 @@ Vector3 nav_predict_future_position_internal(SpaceObject obj, float time) {
 
 
 
+/*       OTHER: DEVICE INTERACTION      */
+
+int nav_run_telemetry_analysis(void) { // create HealthData
+
+    // check all devices, create healthdata reports and save and continue if error occoured or any critical levels.
+
+
+
+    return 0;
+}
+
+int nav_anomalie_found_protocol(HealthData health_data) { // from CDS(this) or other FP(fault protection) algorithms or downlink
+    
+    // eg. termniate device processes
+
+    return 0;
+}
+
+int nav_enter_safing(void) {
+
+    // types:
+    // - simple; baseline safing instructions read from ROM
+    // - complex; in CDS RAM, can be updated
+
+    return 0;
+}
+
+// TODO : implement CLT (https://science.nasa.gov/learn/basics-of-space-flight/chapter11-1/)
+
+
+void nav_energy_lowpower_protocol_internal(void) {
+    
+    return;
+}
+
+
+// initializes a new communication data packet depending on what packet type is specified. 
+void nav_communication_create_data_packet(CommunicationDataPacket *comm_data_packet, DataPacketType data_packet_type) {
+
+    comm_data_packet->packet_timestamp = (unsigned int) time(NULL);
+    sprintf(comm_data_packet->packet_id, "%08X%04X", (unsigned int)time(NULL), rand() * 0xFFFF);
+    comm_data_packet->data_packet_type = data_packet_type;
+    
+    // eg. compression
+
+    return;
+}
+
+int nav_communication_store_packet(CommunicationDataPacket *comm_data_packet) {
+
+    // TODO: write to file
+
+    return 0;
+}
+
+int nav_communication_send_packet(CommunicationDataPacket *comm_data_packet) { // send to transmitter
+
+    int send_status = devices_transmittor_send_communication_packet(*comm_data_packet);
+    if (send_status == -1) {
+        printf("%s failed to send packet through transmittor (code=%d))\n", RENDERER_ERROR_PRINT, send_status);
+    }
+    return 0;
+}
+
+int nav_communication_receive_packet(CommunicationDataPacket *comm_data_packet) { // from transmitter
+
+    printf("PACKET RECEIVED : %s\n| time=%u\n| packet_id=%s\n", data_packet_type_label[comm_data_packet->data_packet_type], (unsigned int)comm_data_packet->packet_timestamp, comm_data_packet->packet_id);
+
+    switch (comm_data_packet->data_packet_type) {
+        case COMMAND:
+            nav_communication_parse_event_file(comm_data_packet->SEF_file);
+            break;
+
+        case NAVIGATION:
+            break;
+
+        case TELEMETRY:
+            break;
+
+        case DEBRIS_STATUS:
+            break;
+
+        case HEALTH_STATUS:
+            break;
+    }
+
+    return 0;
+}
+
+
+
 
 /*       OTHER: CONNECTION TO SIMULATION      */
 
@@ -215,10 +232,12 @@ int nav_update(void) {
 }
 
 int nav_create(void) {
-    nav_spaceobjects_index = space_append_spaceobject(SPACECRAFT, (Vector3){0, 0, EARTH_RADIUS + 1200000}, (Vector3){8000, 0, 0}, 20);
-    if (nav_spaceobjects_index == -1) return -1;
+    //nav_spaceobjects_index = space_append_spaceobject(SPACECRAFT, (Vector3){0, 0, EARTH_RADIUS + 1200000}, (Vector3){8000, 0, 0}, 20);
+    //if (nav_spaceobjects_index == -1) return -1;
 
-
+    CommunicationDataPacket comm_data_packet;
+    nav_communication_create_data_packet(&comm_data_packet, COMMAND);
+    nav_communication_send_packet(&comm_data_packet);
 
     return 0;
 }

@@ -23,7 +23,23 @@ typedef struct {
     float radius;
 } SpaceObject;
 
+
+
+
+/*      DEVICES      */
+
 typedef struct {
+    u_int16_t id;
+
+    Vector3 offset; // ????? offset från vad ?
+    const float mass;    // can't be updated in space => const
+
+} Device;
+
+typedef struct {
+
+    Device *device;
+
     u_int8_t communication_status;  // 0=offline, 1=online, 2=degraded
 
     u_int16_t battery_level;    
@@ -46,18 +62,47 @@ typedef struct {
 
 } HealthData;
 
+typedef enum {
 
+    // RECEIVE
+    COMMAND,
+    NAVIGATION,
+    TELEMETRY,
+    
+    // SEND
+    DEBRIS_STATUS,
+    HEALTH_STATUS 
 
-/*      DEVICES      */
+    // TODO: add more
+} DataPacketType;
 
-typedef struct {
-    u_int16_t id;
+typedef struct { 
+    DataPacketType data_packet_type;
+    
+    u_int32_t packet_timestamp;            // time of packet creation  
+    u_int32_t meassurement_timestamp;      // time of eg. angle observation
+    char packet_id[17];            // unique for all packets
+    char source_id[17];            // from which system / subsystem (/device)
+    u_int16_t data_length;     
+    u_int16_t sequence_number;      // if multiple packets, which order
+    char general_data[256];
+
+    // HEALTH
     HealthData health_data;
 
-    Vector3 offset; // ????? offset från vad ?
-    const float mass;    // can't be updated in space => const
+    // COMMAND
+    FILE *SEF_file;             // SEquence of Events
 
-} Device;
+    // NAVIGATION
+    int observation_latitude;
+    int observation_longitude;
+    int observation_altitude;
+    u_int32_t distance; 
+    int radial_velocity;        // from/towards earth
+    int azimuth_angle;          // on earth sky
+    int elevation_angle;        // on earth sky
+
+} CommunicationDataPacket;
 
 typedef enum {
     CW,   // continuous wave (unmodulated continuous-wave)
@@ -119,34 +164,39 @@ typedef struct {
 typedef struct {
     Device d;  
     int size;
+} TransmittorDevice;
+
+typedef struct {
+    Device d;  
+    int size;
 } StorageDevice;
 
 /*
     SKROT - ADD: OTHER DEVICES
 */
 
-extern void devices_radar_poweron(RadarDevice *radar);
-extern void devices_radar_shutdown(RadarDevice *radar);
+extern void devices_poweron(Device *device);
+extern void devices_shutdown(Device *deivce);
+
 extern int devices_radar_scan(RadarDevice *radar);
+extern void devices_radar_status(RadarDevice *radar, HealthData *health_data);
 
-extern void devices_lidar_poweron(LidarDevice *lidar);
-extern void devices_lidar_shutdown(LidarDevice *lidar);
 extern int devices_lidar_scan(LidarDevice *lidar);
+extern void devices_lidar_status(LidarDevice *lidar, HealthData *health_data);
 
-extern void devices_camera_poweron(CameraDevice *camera);
-extern void devices_camera_shutdown(CameraDevice *camera);
 extern int devices_camera_scan(CameraDevice *camera);
+extern void devices_camera_status(CameraDevice *camera, HealthData *health_data);
 
-extern void devices_claw_poweron(ClawDevice *claw);
-extern void devices_claw_shutdown(ClawDevice *claw);
 extern int devices_claw_grab(ClawDevice *claw);
+extern void devices_claw_status(ClawDevice *claw, HealthData *health_data);
 
-extern int devices_battery_status(BatteryDevice *battery);
+extern void devices_battery_status(BatteryDevice *battery, HealthData *health_data);
 
-extern void devices_solarpanel_poweron(SolarPanelDevice *solar_panel);
-extern void devices_solarpanel_shutdown(SolarPanelDevice *solar_panel);
-extern int devices_solarpanel_status(SolarPanelDevice *solar_panel);
-extern int energy_adjust_solar_panels(SolarPanelDevice *solar_panel, Vector3 current_position, Vector3 sunlight_direction);
+extern void devices_solarpanel_status(SolarPanelDevice *solar_panel, HealthData *health_data);
+extern int devices_adjust_solar_panels(SolarPanelDevice *solar_panel, Vector3 current_position, Vector3 sunlight_direction);
+
+extern void devices_transmittor_status(TransmittorDevice *transmittor, HealthData *health_data);
+extern int devices_transmittor_send_communication_packet(CommunicationDataPacket comm_data_packet);
 
 extern int devices_storage_write(StorageDevice *storage);
 extern int devices_storage_read(StorageDevice *storage);

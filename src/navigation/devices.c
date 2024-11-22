@@ -11,17 +11,21 @@ https://www.innosent.de/en/radar/
 
 
 
+// GENERAL
+
+void devices_poweron(Device *device) {
+
+    return;
+}
+
+void devices_shutdown(Device *deivce) {
+
+    return;
+}
+
+
+
 // RADAR
-
-void devices_radar_poweron(RadarDevice *radar) {
-
-    return;
-}
-
-void devices_radar_shutdown(RadarDevice *radar) {
-
-    return;
-}
 
 int devices_radar_scan(RadarDevice *radar) {
 
@@ -56,20 +60,14 @@ int devices_radar_scan(RadarDevice *radar) {
     return 0;
 }
 
+void device_radar_status(RadarDevice *radar, HealthData *health_data) {
+
+    return;
+}
 
 
 
 // LIDAR
-
-void devices_lidar_poweron(LidarDevice *lidar) {
-
-    return;
-}
-
-void devices_lidar_shutdown(LidarDevice *lidar) {
-
-    return;
-}
 
 int devices_lidar_scan(LidarDevice *lidar) {
 
@@ -78,20 +76,15 @@ int devices_lidar_scan(LidarDevice *lidar) {
     return 0;
 }
 
+void device_lidar_status(LidarDevice *lidar, HealthData *health_data) {
+
+    return;
+}
+
 
 
 
 // CAMERA
-
-void devices_camera_poweron(CameraDevice *camera) {
-
-    return;
-}
-
-void devices_camera_shutdown(CameraDevice *camera) {
-
-    return;
-}
 
 int devices_camera_scan(CameraDevice *camera) {
 
@@ -100,20 +93,14 @@ int devices_camera_scan(CameraDevice *camera) {
     return 0;
 }
 
+void device_camera_status(CameraDevice *camera, HealthData *health_data) {
+
+    return;
+}
 
 
 
 // CLAW
-
-void devices_claw_poweron(ClawDevice *claw) {
-
-    return;
-}
-
-void devices_claw_shutdown(ClawDevice *claw) {
-
-    return;
-}
 
 int devices_claw_grab(ClawDevice *claw) {
     
@@ -122,15 +109,20 @@ int devices_claw_grab(ClawDevice *claw) {
     return 0;
 }
 
+void device_claw_status(ClawDevice *claw, HealthData *health_data) {
+
+    return;
+}
+
 
 
 
 // BATTERY
 
 // checks information about battery (eg: temperature)
-int devices_battery_status(BatteryDevice *battery_device) {
+void devices_battery_status(BatteryDevice *battery_device, HealthData *health_data) {
 
-    return 0;
+    return;
 }
 
 
@@ -140,26 +132,33 @@ int devices_battery_status(BatteryDevice *battery_device) {
 
 // updates information about solar panel (eg: sunlight coverage)
 
-void devices_solarpanel_poweron(SolarPanelDevice *solar_panel) {
+void devices_solarpanel_status(SolarPanelDevice *solar_panel, HealthData *health_data) {
 
     return;
 }
 
-void devices_solarpanel_shutdown(SolarPanelDevice *solar_panel) {
+int devices_adjust_solar_panels(SolarPanelDevice *solar_panel, Vector3 current_position, Vector3 sunlight_direction) {
+
+    return 0;
+}
+
+
+
+
+// TRANSMITTOR
+
+void devices_transmittor_status(TransmittorDevice *transmittor, HealthData *health_data) {
 
     return;
 }
 
-int devices_solarpanel_status(SolarPanelDevice *solar_panel) {
+int devices_transmittor_send_communication_packet(CommunicationDataPacket comm_data_packet) {
 
-    return 0;
+    /*  SKROT - INSERT: IMPLEMENTATION OF TRANSMITTOR SEND HERE (return -1 if failed & run analysis) */
+
+    printf("%s communication packet succesfully sent (from transmittor)\n", RENDERER_DONE_PRINT);
+    return 1;
 }
-
-int energy_adjust_solar_panels(SolarPanelDevice *solar_panel, Vector3 current_position, Vector3 sunlight_direction) {
-
-    return 0;
-}
-
 
 
 

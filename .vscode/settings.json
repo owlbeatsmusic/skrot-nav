@@ -6,6 +6,8 @@
         "log.h": "c",
         "unistd.h": "c",
         "math.h": "c",
-        "stdio.h": "c"
+        "stdio.h": "c",
+        "__locale": "c",
+        "locale": "c"
     }
 }
