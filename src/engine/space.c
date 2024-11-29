@@ -4,7 +4,10 @@
 #include <math.h>
 #include <time.h>
 
-#include "../global.h"
+#include "engine/space.h"
+#include "engine/renderer.h"
+#include "common/vector.h"
+#include "nav/core.h"
 
 
 
@@ -53,15 +56,10 @@ int space_append_spaceobject(SpaceObjectType type, Vector3 position, Vector3 vel
         
 /*   CALCULATIONS    */
 
-// Compute distance between two points in 3D space
-float space_distance(Vector3 a, Vector3 b) {
-    return sqrt(pow(b.x - a.x, 2) + pow(b.y - a.y, 2) + pow(b.z - a.z, 2));
-}
-
 // Compute gravitational force vector acting on object due to Earth
 Vector3 gravitational_force_internal(SpaceObject obj) {
     Vector3 force;
-    float r = space_distance(obj.position, earth_pos);
+    float r = vector_distance(obj.position, earth_pos);
     
     // Calculate the magnitude of the gravitational force (magnitude meaning size / strength)
     //               = "size / length"

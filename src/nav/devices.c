@@ -1,14 +1,17 @@
 #include <stdio.h>
 #include <math.h>
 
-#include "../global.h"
+#include "nav/devices.h"
+#include "engine/renderer.h"
+#include "engine/space.h"
+#include "common/vector.h"
+#include "common/print.h"
 
 /*
 https://sv.wikipedia.org/wiki/Radar
 https://dev.ti.com/tirex/explore/node?node=A__AHcIcGIuxqplVSvU7AwGCA__radar_toolbox__1AslXXD__LATEST
 https://www.innosent.de/en/radar/
 */
-
 
 
 // GENERAL
@@ -34,7 +37,7 @@ int devices_radar_scan(RadarDevice *radar) {
     for (float azimuth = radar->from_azimuth_angle; azimuth < radar->to_azimuth_angle; azimuth += radar->azimuth_step_size) {
         for (float elevation = radar->from_elevation_angle; elevation < radar->to_elevation_angle; elevation += radar->elevation_step_size) {
             for (int i = 0; i < MAX_SPACEOBJECTS; i++) {
-                double dist = space_distance(radar->d.offset, spaceobjects[i].position);
+                double dist = vector_distance(radar->d.offset, spaceobjects[i].position);
 
                 // Calculate azimuth and elevation to the object
                 /*
@@ -156,7 +159,7 @@ int devices_transmittor_send_communication_packet(CommunicationDataPacket comm_d
 
     /*  SKROT - INSERT: IMPLEMENTATION OF TRANSMITTOR SEND HERE (return -1 if failed & run analysis) */
 
-    printf("%s communication packet succesfully sent (from transmittor)\n", RENDERER_DONE_PRINT);
+    printf("%s communication packet succesfully sent (from transmittor)\n", PRINT_DONE);
     return 1;
 }
 
@@ -177,3 +180,41 @@ int devices_storage_read(StorageDevice *storage) {
 
     return 0;
 } 
+
+
+
+// connection to nav
+
+int nav_run_telemetry_analysis(void) { // create HealthData
+
+    // check all devices, create healthdata reports and save and continue if error occoured or any critical levels.
+
+
+
+    return 0;
+}
+
+int nav_anomalie_found_protocol(HealthData health_data) { // from CDS(this) or other FP(fault protection) algorithms or downlink
+    
+    // eg. termniate device processes
+
+    return 0;
+}
+
+int nav_enter_safing(void) {
+
+    // types:
+    // - simple; baseline safing instructions read from ROM
+    // - complex; in CDS RAM, can be updated
+
+    return 0;
+}
+
+// TODO : implement CLT (https://science.nasa.gov/learn/basics-of-space-flight/chapter11-1/)
+
+
+void nav_energy_lowpower_protocol_internal(void) {
+    
+    return;
+}
+

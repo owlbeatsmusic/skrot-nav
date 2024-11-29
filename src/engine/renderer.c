@@ -1,11 +1,6 @@
 #include <stdio.h>
 #include <string.h>
-#include "../global.h"
-
-const char RENDERER_WARNING_PRINT[] = "[\033[0;33mwarning\033[0m]:";
-const char RENDERER_ERROR_PRINT[]   = "[\033[0;31merror\033[0m]:";
-const char RENDERER_DEBUG_PRINT[]   = "[\033[0;35mdebug\033[0m]:";
-const char RENDERER_DONE_PRINT[]    = "[\033[0;32mdone\033[0m]:";
+#include "engine/renderer.h"
 
 const char COLORCODE_DEFAULT[]    = "\x1b[m";
 const char COLORCODE_FG_BLACK[]   = "\x1b[30m";
