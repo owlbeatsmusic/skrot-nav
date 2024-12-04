@@ -9,7 +9,7 @@
 #include "common/vector.h"
 #include "nav/core.h"
 
-
+ 
 
 /*   VARIABLES   */
 
