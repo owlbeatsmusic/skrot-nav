@@ -8,27 +8,35 @@
 
 typedef struct {
 
+    uint16_t packet_timestamp;            // time of packet creation  
+    uint16_t meassurement_timestamp;      // time of eg. angle observation
+    char packet_id[17];                    // unique for all packets
+    char source_id[17];                    // from which system / subsystem (/device)
     Device *device;
 
-    u_int8_t communication_status;  // 0=offline, 1=online, 2=degraded
+    /* device */
+    uint8_t communication_status;  // 0=offline, 1=online, 2=degraded
 
-    u_int16_t battery_level;    
-    u_int8_t battery_status;        // 0 = normal, 1 = warning, 2 = critical)
+    uint16_t battery_level;    
+    uint8_t battery_status;        // 0 = normal, 1 = warning, 2 = critical)
 
     float temperature; 
-    u_int8_t thermal_status;        // 0 = normal, 1 = warning, 2 = critical)
+    uint8_t thermal_status;        // 0 = normal, 1 = warning, 2 = critical)
 
     float fuel_level;             
-    u_int8_t fuel_status;           // 0 = normal, 1 = warning, 2 = critical)
+    uint8_t fuel_status;           // 0 = normal, 1 = warning, 2 = critical)
 
     float pressure;      
-    u_int8_t pressure_status;       // 0 = normal, 1 = warning, 2 = critical)
+    uint8_t pressure_status;       // 0 = normal, 1 = warning, 2 = critical)
 
-    u_int16_t radiation;        
-    u_int8_t radiation_level;       // 0 = normal, 1 = warning, 2 = critical)
+    uint16_t radiation;        
+    uint8_t radiation_level;       // 0 = normal, 1 = warning, 2 = critical)
 
-    u_int8_t error_code;            // if not 0, error has occoured in device / substystem
-    u_int32_t uptime;               
+    uint8_t error_code;            // if not 0, error has occoured in device / substystem
+    uint16_t uptime;    
+
+    /* TODO: "subsystems" */ 
+    uint32_t drift_status;        // 0 = normal, 1 = warning, 2 = critical)
 
 } HealthData;
 
@@ -51,12 +59,12 @@ extern char *data_packet_type_label[];
 typedef struct { 
     DataPacketType data_packet_type;
     
-    u_int32_t packet_timestamp;            // time of packet creation  
-    u_int32_t meassurement_timestamp;      // time of eg. angle observation
+    uint16_t packet_timestamp;            // time of packet creation  
+    uint16_t meassurement_timestamp;      // time of eg. angle observation
     char packet_id[17];            // unique for all packets
     char source_id[17];            // from which system / subsystem (/device)
-    u_int16_t data_length;     
-    u_int16_t sequence_number;      // if multiple packets, which order
+    uint16_t data_length;     
+    uint16_t sequence_number;      // if multiple packets, which order
     char general_data[256];
 
     // HEALTH
@@ -69,7 +77,7 @@ typedef struct {
     int observation_latitude;
     int observation_longitude;
     int observation_altitude;
-    u_int32_t distance; 
+    uint16_t distance; 
     int radial_velocity;        // from/towards earth
     int azimuth_angle;          // on earth sky
     int elevation_angle;        // on earth sky

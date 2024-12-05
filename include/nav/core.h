@@ -3,8 +3,10 @@
 
 extern int nav_spaceobjects_index;
 
-extern int nav_update(void);
 
+extern int nav_get_sclk(void);
+
+extern void nav_shutdown(void);
 extern int nav_create(void);
 
 #endif

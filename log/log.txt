@@ -1,3 +1,0 @@
-[2024-12-05 10:27:04]: log file created
-[2024-12-05 10:27:04]: main nav-process started
-[2024-12-05 10:27:04]: nav shutdown successfully

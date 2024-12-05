@@ -4,14 +4,22 @@
 #include "nav/communication.h"
 #include "engine/space.h"
 
-extern int nav_evaluate_drift_from_course(void);
-extern int calculate_course_delta_velocity(void);
+typedef struct {
+    Vector3 destination;
+    uint32_t estimated_time;
+} FlightPathManouver;
 
-extern void nav_propulsion_set_destination_internal(Vector3 target);
+typedef struct {
+    Vector3 destination;
+    uint32_t estimated_time;
+} FlightPath;
 
+extern void nav_drift_status(HealthData *health_data);
 
-extern void nav_update_tracked_objects_internal(int spaceobjects_index);
-extern SpaceObject nav_identify_object_internal(RadarObject radar_obj);
+extern int nav_create_course_manouver(FlightPathManouver *manouver);
+extern void nav_perform_manouver(FlightPathManouver *manouver);
 
+int nav_update_flight_path(FlightPath *flight_path);
+int nav_create_flight_path(FlightPath *flight_path);
 
 #endif

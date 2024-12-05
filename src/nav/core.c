@@ -33,7 +33,7 @@ void nav_shutdown(void) {
 }
 
 /* The main loop for the whole navigation. */
-int nav_proc_main(void) {
+int nav_proc_main_internal(void) {
     awlib_log_t("log/log.txt", "main nav-process started\n");
 
     while (system_active) {
@@ -52,6 +52,6 @@ int nav_create(void) {
 
     start_time = time(NULL);
 
-    nav_proc_main();
+    nav_proc_main_internal();
     return 0;
 }
