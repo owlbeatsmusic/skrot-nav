@@ -1,8 +1,10 @@
 #!/bin/zsh
 
-gcc -Wall -pedantic -std=iso9899:1999 -I./include -I./lib \
+gcc -Wall -pedantic -std=iso9899:1999 \
+    -I./include -I./lib \
     \
-    src/main.c src/common/vector.c \
+    src/main.c \
+    src/common/vector.c \
     src/common/print.c \
     src/engine/renderer.c \
     src/engine/space.c \

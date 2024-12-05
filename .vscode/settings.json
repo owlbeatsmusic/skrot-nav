@@ -9,6 +9,8 @@
         "stdio.h": "c",
         "__locale": "c",
         "locale": "c",
-        "print.h": "c"
+        "print.h": "c",
+        "communication.h": "c",
+        "core.h": "c"
     }
 }

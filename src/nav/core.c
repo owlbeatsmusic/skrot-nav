@@ -1,28 +1,57 @@
+#include<unistd.h>
+#include <stdint.h>
+#include <time.h>
+
+#include "common/bool.h"
 #include "nav/core.h"
 #include "nav/communication.h"
+#include "awlib_log/log.h"
 
 typedef struct {
     FILE *file;
 } SpacecraftEvent;
 
-u_int32_t sclk = 0; // clock
-
-SpacecraftEvent spacecraft_sequence_of_events[1024];
-
 int nav_spaceobjects_index = 0;
 
-int nav_update(void) {
+SpacecraftEvent spacecraft_sequence_of_events[1024];
+uint32_t start_time = 0; // for setting sclk
+uint32_t sclk = 0; // clock
 
+Bool system_active = TRUE;
+
+/* Aka. Get time */
+int nav_get_sclk(void) {
+    sclk = (uint32_t)time(NULL) - start_time;
+    return sclk;
+}
+
+void nav_shutdown(void) {
+
+    // safetly shutdown all systems
+
+    awlib_log_t("log/log.txt", "nav shutdown successfully\n");
+}
+
+/* The main loop for the whole navigation. */
+int nav_proc_main(void) {
+    awlib_log_t("log/log.txt", "main nav-process started\n");
+
+    while (system_active) {
+        printf("t=%d\n", nav_get_sclk());
+        system_active = FALSE;
+    }
+
+    nav_shutdown();
     return 0;
 }
 
+/* Initialize and add "spacecraft" as a object in simulated space. */
 int nav_create(void) {
     //nav_spaceobjects_index = space_append_spaceobject(SPACECRAFT, (Vector3){0, 0, EARTH_RADIUS + 1200000}, (Vector3){8000, 0, 0}, 20);
     //if (nav_spaceobjects_index == -1) return -1;
 
-    CommunicationDataPacket comm_data_packet;
-    nav_communication_create_data_packet(&comm_data_packet, COMMAND);
-    nav_communication_send_packet(&comm_data_packet);
+    start_time = time(NULL);
 
+    nav_proc_main();
     return 0;
 }
