@@ -11,6 +11,7 @@
         "locale": "c",
         "print.h": "c",
         "communication.h": "c",
-        "core.h": "c"
+        "core.h": "c",
+        "stdlib.h": "c"
     }
 }

@@ -5,6 +5,7 @@
 #include "nav/devices.h"
 #include "nav/communication.h"
 #include "common/print.h"
+#include "common/id.h"
 
 
 char *data_packet_type_label[] = {
@@ -31,9 +32,8 @@ void nav_communication_create_data_packet(CommunicationDataPacket *comm_data_pac
 
     // create & set id
     comm_data_packet->packet_timestamp = (unsigned int) time(NULL);
-    sprintf(comm_data_packet->packet_id, "%08X%04X", (unsigned int)time(NULL), rand() * 0xFFFF);
     comm_data_packet->data_packet_type = data_packet_type;
-    
+    id_generate(comm_data_packet->packet_id);
     // eg. compression
 
     return;

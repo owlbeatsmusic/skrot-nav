@@ -23,7 +23,7 @@ Some of the code is meant to be reimplemented when the code is used in real spac
 
 ## Navigation System
 
-Flight path control, object detection and communication.
+The main system is divded into 
 
 
 ## Space Simulation
@@ -31,6 +31,6 @@ Flight path control, object detection and communication.
 Eulers method is the main method used for simulating gravitation for orbit (and collision).
 
 ## Main Sources
- - NASA: Basics Of Spaceflight (https://science.nasa.gov/learn/basics-of-space-flight/chapter13-1/)
+ - NASA: Basics Of Spaceflight (https://science.nasa.gov/learn/basics-of-space-flight/)
  
  
