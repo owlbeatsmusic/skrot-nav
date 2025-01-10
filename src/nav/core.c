@@ -5,6 +5,7 @@
 #include "common/bool.h"
 #include "nav/core.h"
 #include "nav/communication.h"
+#include "nav/flight_path.h"
 #include "awlib_log/log.h"
 
 typedef struct {
@@ -38,6 +39,11 @@ int nav_proc_main_internal(void) {
 
     while (system_active) {
         printf("t=%d\n", nav_get_sclk());
+        
+        // test:
+        FlightPath fp;
+        nav_create_flight_path(&fp);
+
         system_active = FALSE;
     }
 

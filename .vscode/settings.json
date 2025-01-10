@@ -13,6 +13,7 @@
         "communication.h": "c",
         "core.h": "c",
         "stdlib.h": "c",
-        "devices_types.h": "c"
+        "devices_types.h": "c",
+        "flight_path.h": "c"
     }
 }

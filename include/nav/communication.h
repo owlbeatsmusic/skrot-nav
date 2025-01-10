@@ -11,8 +11,8 @@ typedef struct {
 
     uint16_t packet_timestamp;            // time of packet creation  
     uint16_t meassurement_timestamp;      // time of eg. angle observation
-    char packet_id[17];                    // unique for all packets
-    char source_id[17];                    // from which system / subsystem (/device)
+    char packet_id[18];                    // unique for all packets
+    char source_id[18];                    // from which system / subsystem (/device)
     Device *device;
 
     /* device */
@@ -63,8 +63,9 @@ typedef struct {
     
     uint16_t packet_timestamp;            // time of packet creation  
     uint16_t meassurement_timestamp;      // time of eg. angle observation
-    char packet_id[17];            // unique for all packets
-    char source_id[17];            // from which system / subsystem (/device)
+    char packet_id[18];            // unique for all packets
+    char source_id[18];            // from which system / subsystem (/device)
+    char request_id[18];           // id of request-packet sent to downlink
     uint16_t data_length;     
     uint16_t sequence_number;      // if multiple packets, which order
     char general_data[256];
@@ -84,7 +85,7 @@ typedef struct {
     int observation_altitude; */
     
     Bool request_earth_distance;
-    uint16_t distance; 
+    uint32_t distance; 
     
     Bool request_radial_velocity;
     int radial_velocity;        // from/towards earth
@@ -103,7 +104,7 @@ extern int nav_communication_send_view_period_file(FILE *view_period_file);
 extern void nav_communication_create_data_packet(CommunicationDataPacket *comm_data_packet, DataPacketType data_packet_type);
 extern int nav_communication_store_packet(CommunicationDataPacket *comm_data_packet);
 extern int nav_communication_send_packet(CommunicationDataPacket *comm_data_packet); // send to transmitter
-extern int nav_communication_receive_packet(CommunicationDataPacket *comm_data_packet); // from transmitter
+extern int nav_communication_receive_packet(CommunicationDataPacket comm_data_packet); // from transmitter
 
 
 #endif

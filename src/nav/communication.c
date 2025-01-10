@@ -34,7 +34,7 @@ void nav_communication_create_data_packet(CommunicationDataPacket *comm_data_pac
     // create & set id
     comm_data_packet->packet_timestamp = (unsigned int) time(NULL);
     comm_data_packet->data_packet_type = data_packet_type;
-    id_generate(comm_data_packet->packet_id);
+    id_generate(comm_data_packet->packet_id, 1); // "1" for spacecraft
     // eg. compression
 
     return;
@@ -49,20 +49,25 @@ int nav_communication_store_packet(CommunicationDataPacket *comm_data_packet) {
 
 int nav_communication_send_packet(CommunicationDataPacket *comm_data_packet) { // send to transmitter
 
-    int send_status = devices_transmittor_send_communication_packet(*comm_data_packet);
+    printf("PACKET SENDING... : %s\n| time=%u\n| packet_id=%s\n", data_packet_type_label[comm_data_packet->data_packet_type], (unsigned int)comm_data_packet->packet_timestamp, comm_data_packet->packet_id);
+    printf("\n");
+
+    int send_status = devices_transmittor_send_communication_packet(comm_data_packet);
     if (send_status == -1) {
         printf("%s failed to send packet through transmittor (code=%d))\n", PRINT_ERROR, send_status);
     }
+
     return 0;
 }
 
-int nav_communication_receive_packet(CommunicationDataPacket *comm_data_packet) { // from transmitter
+int nav_communication_receive_packet(CommunicationDataPacket comm_data_packet) { // from transmitter
 
-    printf("PACKET RECEIVED : %s\n| time=%u\n| packet_id=%s\n", data_packet_type_label[comm_data_packet->data_packet_type], (unsigned int)comm_data_packet->packet_timestamp, comm_data_packet->packet_id);
+    printf("PACKET RECEIVED : %s\n| time=%u\n| packet_id=%s\n| request_id=%s\n", data_packet_type_label[comm_data_packet.data_packet_type], (unsigned int)comm_data_packet.packet_timestamp, comm_data_packet.packet_id, comm_data_packet.request_id);
+    printf("\n");
 
-    switch (comm_data_packet->data_packet_type) {
+    switch (comm_data_packet.data_packet_type) {
         case COMMAND:
-            nav_communication_parse_event_file(comm_data_packet->SEF_file);
+            nav_communication_parse_event_file(comm_data_packet.SEF_file);
             break;
 
         case NAVIGATION:

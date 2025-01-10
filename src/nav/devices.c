@@ -1,7 +1,16 @@
+/*
+    DEVICES.C
+
+    This file handles device interaction.
+
+    (last updated: 2025-01-10)
+*/
+
 #include <stdio.h>
 #include <math.h>
 
 #include "nav/devices.h"
+#include "engine/downlink.h"
 #include "engine/renderer.h"
 #include "engine/space.h"
 #include "common/vector.h"
@@ -156,9 +165,11 @@ void devices_transmittor_status(TransmittorDevice *transmittor, HealthData *heal
     return;
 }
 
-int devices_transmittor_send_communication_packet(CommunicationDataPacket comm_data_packet) {
+int devices_transmittor_send_communication_packet(CommunicationDataPacket *comm_data_packet) {
 
     /*  SKROT - INSERT: IMPLEMENTATION OF TRANSMITTOR SEND HERE (return -1 if failed & run analysis) */
+    // this must be replaced in actual space:
+    downlink_receive_communication_data_packet(*comm_data_packet);
 
     printf("%s communication packet succesfully sent (from transmittor)\n", PRINT_DONE);
     return 1;

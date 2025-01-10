@@ -30,7 +30,7 @@ extern void devices_solarpanel_status(SolarPanelDevice *solar_panel, HealthData 
 extern int devices_adjust_solar_panels(SolarPanelDevice *solar_panel, Vector3 current_position, Vector3 sunlight_direction);
 
 extern void devices_transmittor_status(TransmittorDevice *transmittor, HealthData *health_data);
-extern int devices_transmittor_send_communication_packet(CommunicationDataPacket comm_data_packet);
+extern int devices_transmittor_send_communication_packet(CommunicationDataPacket *comm_data_packet);
 
 extern int devices_storage_write(StorageDevice *storage);
 extern int devices_storage_read(StorageDevice *storage);

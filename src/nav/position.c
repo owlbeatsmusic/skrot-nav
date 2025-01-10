@@ -8,9 +8,10 @@
     (description updated: 2025-01-10)
 */
 
+#include <stdint.h>
+
 #include "engine/space.h"
 #include "common/vector.h"
-
 #include "nav/communication.h"
 
 
@@ -18,7 +19,7 @@ Vector3 last_mathematical_position;
 Vector3 last_observed_position; 
 
 
-int nav_communication_get_distance_from_earth(Vector3 *velocity) {
+int nav_communication_get_distance_from_earth(uint32_t *distance) {
     
     CommunicationDataPacket data_packet;
     data_packet.request_earth_distance = TRUE;
@@ -29,7 +30,7 @@ int nav_communication_get_distance_from_earth(Vector3 *velocity) {
     return 0;
 }
 
-int nav_communication_get_radial_velocity(float *distance) {
+int nav_communication_get_radial_velocity(Vector3 *velocity) {
 
     CommunicationDataPacket data_packet;
     data_packet.request_radial_velocity = TRUE;
@@ -54,6 +55,10 @@ int nav_communication_get_earth_sky_angles(float *azimuth_angle, float *elevatio
 
 
 int nav_evaluate_current_position(void) { // begin the Batch Filter
+
+    // test:
+    uint32_t earth_dist = 0;
+    nav_communication_get_distance_from_earth(&earth_dist);
     
     return 0;
 }

@@ -1,8 +1,19 @@
+/*
+    FLIGHT_PATH.C
+
+    This file handles the navigation of the spacecraft. It is the centerpoint
+    for the navigation system; getting information from "position.c".
+
+    (updated last: 2025-01-10)
+*/
+
+
 #include <stdio.h>
 #include <stdint.h>
 
 #include "nav/flight_path.h"
 #include "nav/communication.h"
+#include "nav/position.h"
 #include "engine/space.h"
 
 
@@ -73,6 +84,9 @@ int nav_update_flight_path(FlightPath *flight_path) {
 }
 
 int nav_create_flight_path(FlightPath *flight_path) {
+    
+    // test:
+    nav_evaluate_current_position();
 
     return 0;
 }

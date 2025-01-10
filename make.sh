@@ -9,6 +9,7 @@ gcc -Wall -pedantic -std=iso9899:1999 \
     src/common/id.c \
     src/engine/renderer.c \
     src/engine/space.c \
+    src/engine/downlink.c \
     src/nav/communication.c \
     src/nav/core.c \
     src/nav/devices.c \
