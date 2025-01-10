@@ -14,7 +14,8 @@ char *data_packet_type_label[] = {
     "TELEMETRY",
 
     "DEBRIS_STATUS",
-    "HEALTH_STATUS"
+    "HEALTH_STATUS",
+    "DATA_REQUEST"
 };
 
 int nav_communication_parse_event_file(FILE *SEF_file) {
@@ -74,6 +75,9 @@ int nav_communication_receive_packet(CommunicationDataPacket *comm_data_packet) 
             break;
 
         case HEALTH_STATUS:
+            break;
+
+        case DATA_REQUEST:
             break;
     }
 

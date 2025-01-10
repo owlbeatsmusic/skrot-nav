@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "common/bool.h"
 #include "nav/devices_types.h"
 
 typedef struct {
@@ -49,7 +50,8 @@ typedef enum {
     
     // SEND
     DEBRIS_STATUS,
-    HEALTH_STATUS 
+    HEALTH_STATUS, 
+    DATA_REQUEST
 
     // TODO: add more
 } DataPacketType;
@@ -67,18 +69,27 @@ typedef struct {
     uint16_t sequence_number;      // if multiple packets, which order
     char general_data[256];
 
+
     // HEALTH
     HealthData health_data;
+
 
     // COMMAND
     FILE *SEF_file;             // SEquence of Events
 
+
     // NAVIGATION
-    int observation_latitude;
+    /*int observation_latitude;
     int observation_longitude;
-    int observation_altitude;
+    int observation_altitude; */
+    
+    Bool request_earth_distance;
     uint16_t distance; 
+    
+    Bool request_radial_velocity;
     int radial_velocity;        // from/towards earth
+
+    Bool request_earth_sky_angles;
     int azimuth_angle;          // on earth sky
     int elevation_angle;        // on earth sky
 
