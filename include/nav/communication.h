@@ -70,14 +70,11 @@ typedef struct {
     uint16_t sequence_number;      // if multiple packets, which order
     char general_data[256];
 
-
     // HEALTH
     HealthData health_data;
 
-
     // COMMAND
     FILE *SEF_file;             // SEquence of Events
-
 
     // NAVIGATION
     /*int observation_latitude;
@@ -97,6 +94,14 @@ typedef struct {
 } CommunicationDataPacket;
 
 
+typedef struct {
+    char request_id[18];
+    int (*function_pointer)(CommunicationDataPacket *);
+} RequestQueuePair;
+
+RequestQueuePair communication_request_queue[64];
+
+extern int nav_communication_request_queue_add(char request_id[], int (*function_pointer)(CommunicationDataPacket *));
 
 extern int nav_communication_parse_event_file(FILE *SEF_file);
 extern int nav_communication_send_view_period_file(FILE *view_period_file);

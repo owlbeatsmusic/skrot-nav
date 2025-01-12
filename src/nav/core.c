@@ -38,7 +38,7 @@ int nav_proc_main_internal(void) {
     awlib_log_t("log/log.txt", "main nav-process started\n");
 
     while (system_active) {
-        printf("t=%d\n", nav_get_sclk());
+        //printf("t=%d\n", nav_get_sclk());
         
         // test:
         FlightPath fp;

@@ -8,9 +8,11 @@
 int nav_update_orbit_previous_path(void);
 int nav_evaluate_current_position(void); // begin the Batch Filter
 
+int nav_communication_set_distance_from_earth(CommunicationDataPacket *comm_data_packet);
+
 /*
 int nav_communication_get_radial_velocity(float distance);
-int nav_position_get_distance_from_earth(Vector3 velocity);
+int nav_communication_get_distance_from_earth(Vector3 velocity);
 */
 
 int nav_check_for_collisions_internal(SpaceObject *robot);

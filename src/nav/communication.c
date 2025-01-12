@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <string.h>
 #include <stdio.h>
 #include <time.h>
 
@@ -17,6 +18,18 @@ char *data_packet_type_label[] = {
     "HEALTH_STATUS",
     "DATA_REQUEST"
 };
+
+// Search for first free index to create queue pair
+int nav_communication_request_queue_add(char request_id[], int (*function_pointer)(CommunicationDataPacket *)) {
+    for (int i = 0; i < 64; i ++) {
+        if (communication_request_queue[i].function_pointer == NULL) {
+            communication_request_queue[i].function_pointer = function_pointer;
+            strcpy(communication_request_queue[i].request_id, request_id);
+            break;
+        }
+    }
+    return 0;
+}
 
 int nav_communication_parse_event_file(FILE *SEF_file) {
 
@@ -84,6 +97,16 @@ int nav_communication_receive_packet(CommunicationDataPacket comm_data_packet) {
 
         case DATA_REQUEST:
             break;
+    }
+
+    // If there is a request id then call the function associated with
+    // the id of the request pack.
+    if ((int)strlen(comm_data_packet.request_id) != 0) {
+        for (int i = 0; i < 64; i++) {
+            if (strcmp(comm_data_packet.request_id, communication_request_queue[i].request_id) == 0) {
+                communication_request_queue[i].function_pointer(&comm_data_packet);
+            }
+        }
     }
 
     return 0;

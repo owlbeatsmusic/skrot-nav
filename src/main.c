@@ -1,6 +1,7 @@
 #include <time.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include "awlib_log/log.h"
 #include "engine/renderer.h"
@@ -32,7 +33,6 @@ int main(void) {
 	//int space_status = space_start();
 	//if (space_status != 0) printf("%s space simulation ran into an error (code=%d))\n", PRINT_ERROR, space_status);
 
-	
 	return 0;
 }
 

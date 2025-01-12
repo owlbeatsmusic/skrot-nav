@@ -28,6 +28,8 @@ void downlink_create_communication_data_packet_internal(CommunicationDataPacket 
 
 int downlink_send_communication_data_packet(CommunicationDataPacket new_data_packet) {
 
+    printf("%s downlink sent packet.\n\n", PRINT_DEBUG);
+
     nav_communication_receive_packet(new_data_packet);
 
     return 0;
@@ -35,6 +37,8 @@ int downlink_send_communication_data_packet(CommunicationDataPacket new_data_pac
 
 
 int downlink_receive_communication_data_packet(CommunicationDataPacket received_comm_data_packet) {
+
+    printf("%s downlink received packet.\n", PRINT_DEBUG);
 
     CommunicationDataPacket new_data_packet;
 
