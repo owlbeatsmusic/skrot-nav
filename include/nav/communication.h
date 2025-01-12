@@ -101,15 +101,15 @@ typedef struct {
 
 RequestQueuePair communication_request_queue[64];
 
-extern int nav_communication_request_queue_add(char request_id[], int (*function_pointer)(CommunicationDataPacket *));
+extern int communication_request_queue_add(char request_id[], int (*function_pointer)(CommunicationDataPacket *));
 
-extern int nav_communication_parse_event_file(FILE *SEF_file);
-extern int nav_communication_send_view_period_file(FILE *view_period_file);
+extern int communication_parse_event_file(FILE *SEF_file);
+extern int communication_send_view_period_file(FILE *view_period_file);
 
-extern void nav_communication_create_data_packet(CommunicationDataPacket *comm_data_packet, DataPacketType data_packet_type);
-extern int nav_communication_store_packet(CommunicationDataPacket *comm_data_packet);
-extern int nav_communication_send_packet(CommunicationDataPacket *comm_data_packet); // send to transmitter
-extern int nav_communication_receive_packet(CommunicationDataPacket comm_data_packet); // from transmitter
+extern void communication_create_data_packet(CommunicationDataPacket *comm_data_packet, DataPacketType data_packet_type);
+extern int communication_store_packet(CommunicationDataPacket *comm_data_packet);
+extern int communication_send_packet(CommunicationDataPacket *comm_data_packet); // send to transmitter
+extern int communication_receive_packet(CommunicationDataPacket comm_data_packet); // from transmitter
 
 
 #endif

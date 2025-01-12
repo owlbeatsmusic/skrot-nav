@@ -1,4 +1,3 @@
-
 #include "common/print.h"
 
 const char PRINT_WARNING[] = "[\033[0;33mwarning\033[0m]:";

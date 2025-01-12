@@ -20,71 +20,71 @@
 Vector3 last_mathematical_position;   
 Vector3 last_observed_position; 
 
-uint32_t earth_distance = 0;
+uint32_t last_earth_distance = 0;
 
-// Called from the request queue when the response data packet 
-// (to the requested information) is received.
-int nav_communication_set_distance_from_earth(CommunicationDataPacket *comm_data_packet) {
+// Set the last observed distance from earth to the distance
+// provided in the response packet.
+int position_update_distance_from_earth(CommunicationDataPacket *comm_data_packet) {
     printf("%sdistance=%u\n", PRINT_DEBUG, comm_data_packet->distance);
     return 0;
 }
 
-// Create and send a communcation data packet to downlink and
+// Create and send a communication data packet to downlink and
 // add the request id to queue.
-int nav_communication_get_distance_from_earth(uint32_t *distance) {
+int position_request_distance_from_earth(uint32_t *distance) {
     
     CommunicationDataPacket data_packet;
     data_packet.request_earth_distance = TRUE;
 
-    nav_communication_create_data_packet(&data_packet, DATA_REQUEST);
-    nav_communication_request_queue_add(data_packet.packet_id, &nav_communication_set_distance_from_earth);
-    nav_communication_send_packet(&data_packet);
+    communication_create_data_packet(&data_packet, DATA_REQUEST);
+    communication_request_queue_add(data_packet.packet_id, &position_update_distance_from_earth);
+    communication_send_packet(&data_packet);
     
     return 0;
 }
 
 
-int nav_communication_get_radial_velocity(Vector3 *velocity) {
+int position_request_radial_velocity(Vector3 *velocity) {
 
     CommunicationDataPacket data_packet;
     data_packet.request_radial_velocity = TRUE;
 
-    nav_communication_create_data_packet(&data_packet, DATA_REQUEST);
-    nav_communication_send_packet(&data_packet);
+    communication_create_data_packet(&data_packet, DATA_REQUEST);
+    communication_send_packet(&data_packet);
 
     return 0;
 }
 
-int nav_communication_get_earth_sky_angles(float *azimuth_angle, float *elevation_angle) {
+int position_request_earth_sky_angles(float *azimuth_angle, float *elevation_angle) {
 
     CommunicationDataPacket data_packet;
     data_packet.request_earth_sky_angles = TRUE;
 
-    nav_communication_create_data_packet(&data_packet, DATA_REQUEST);
-    nav_communication_send_packet(&data_packet);
+    communication_create_data_packet(&data_packet, DATA_REQUEST);
+    communication_send_packet(&data_packet);
 
     return 0;
 }
 
 
 
-int nav_evaluate_current_position(void) { // begin the Batch Filter
+int position_evaluate_current_position(void) { // begin the Batch Filter
 
     // test:
     uint32_t earth_dist = 0;
-    nav_communication_get_distance_from_earth(&earth_dist);
+    position_request_distance_from_earth(&earth_dist);
 
     return 0;
 }
 
-int nav_check_for_collisions_internal(SpaceObject *robot) {
+int position_check_for_collisions_internal(SpaceObject *robot) {
 
     return 0;
 }
 
 
 /* Can also be self. */
-Vector3 nav_predict_future_position_internal(SpaceObject obj, float delta_time) {
+Vector3 position_predict_future_position_internal(SpaceObject obj, float delta_time) {
     Vector3 v3 = {0, 0, 0};
     return v3;
 }

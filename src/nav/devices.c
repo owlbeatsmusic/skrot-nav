@@ -3,7 +3,7 @@
 
     This file handles device interaction.
 
-    (last updated: 2025-01-10)
+    (description updated: 2025-01-10)
 */
 
 #include <stdio.h>
@@ -197,7 +197,7 @@ int devices_storage_read(StorageDevice *storage) {
 
 // connection to nav
 
-int nav_run_telemetry_analysis(void) { // create HealthData
+int devices_run_telemetry_analysis(void) { // create HealthData
 
     // check all devices, create healthdata reports and save and continue if error occoured or any critical levels.
 
@@ -206,14 +206,14 @@ int nav_run_telemetry_analysis(void) { // create HealthData
     return 0;
 }
 
-int nav_anomalie_found_protocol(HealthData health_data) { // from CDS(this) or other FP(fault protection) algorithms or downlink
+int devices_anomaly_found_protocol(HealthData health_data) { // from CDS(this) or other FP(fault protection) algorithms or downlink
     
     // eg. termniate device processes
 
     return 0;
 }
 
-int nav_enter_safing(void) {
+int devices_enter_safing(void) {
 
     // types:
     // - simple; baseline safing instructions read from ROM
@@ -225,7 +225,7 @@ int nav_enter_safing(void) {
 // TODO : implement CLT (https://science.nasa.gov/learn/basics-of-space-flight/chapter11-1/)
 
 
-void nav_energy_lowpower_protocol_internal(void) {
+void devices_lowpower_protocol_internal(void) {
     
     return;
 }

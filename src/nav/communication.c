@@ -1,3 +1,12 @@
+/*
+    COMMUNICATION.C
+
+    This file handles communication between uplink and downlink
+    additionally between subsystems within the navigation system.
+
+    (description updated: 2025-01-12)
+*/
+
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
@@ -20,7 +29,7 @@ char *data_packet_type_label[] = {
 };
 
 // Search for first free index to create queue pair
-int nav_communication_request_queue_add(char request_id[], int (*function_pointer)(CommunicationDataPacket *)) {
+int communication_request_queue_add(char request_id[], int (*function_pointer)(CommunicationDataPacket *)) {
     for (int i = 0; i < 64; i ++) {
         if (communication_request_queue[i].function_pointer == NULL) {
             communication_request_queue[i].function_pointer = function_pointer;
@@ -31,18 +40,18 @@ int nav_communication_request_queue_add(char request_id[], int (*function_pointe
     return 0;
 }
 
-int nav_communication_parse_event_file(FILE *SEF_file) {
+int communication_parse_event_file(FILE *SEF_file) {
 
     return 0;
 }
 
-int nav_communication_send_view_period_file(FILE *view_period_file) {
+int communication_send_view_period_file(FILE *view_period_file) {
 
     return 0;
 }
 
 // initializes a new communication data packet depending on what packet type is specified. 
-void nav_communication_create_data_packet(CommunicationDataPacket *comm_data_packet, DataPacketType data_packet_type) {
+void communication_create_data_packet(CommunicationDataPacket *comm_data_packet, DataPacketType data_packet_type) {
 
     // create & set id
     comm_data_packet->packet_timestamp = (unsigned int) time(NULL);
@@ -53,14 +62,14 @@ void nav_communication_create_data_packet(CommunicationDataPacket *comm_data_pac
     return;
 }
 
-int nav_communication_store_packet(CommunicationDataPacket *comm_data_packet) {
+int communication_store_packet(CommunicationDataPacket *comm_data_packet) {
 
     // TODO: write to file
 
     return 0;
 }
 
-int nav_communication_send_packet(CommunicationDataPacket *comm_data_packet) { // send to transmitter
+int communication_send_packet(CommunicationDataPacket *comm_data_packet) { // send to transmitter
 
     printf("PACKET SENDING... : %s\n| time=%u\n| packet_id=%s\n", data_packet_type_label[comm_data_packet->data_packet_type], (unsigned int)comm_data_packet->packet_timestamp, comm_data_packet->packet_id);
     printf("\n");
@@ -73,14 +82,14 @@ int nav_communication_send_packet(CommunicationDataPacket *comm_data_packet) { /
     return 0;
 }
 
-int nav_communication_receive_packet(CommunicationDataPacket comm_data_packet) { // from transmitter
+int communication_receive_packet(CommunicationDataPacket comm_data_packet) { 
 
     printf("PACKET RECEIVED : %s\n| time=%u\n| packet_id=%s\n| request_id=%s\n", data_packet_type_label[comm_data_packet.data_packet_type], (unsigned int)comm_data_packet.packet_timestamp, comm_data_packet.packet_id, comm_data_packet.request_id);
     printf("\n");
 
     switch (comm_data_packet.data_packet_type) {
         case COMMAND:
-            nav_communication_parse_event_file(comm_data_packet.SEF_file);
+            communication_parse_event_file(comm_data_packet.SEF_file);
             break;
 
         case NAVIGATION:
@@ -100,7 +109,7 @@ int nav_communication_receive_packet(CommunicationDataPacket comm_data_packet) {
     }
 
     // If there is a request id then call the function associated with
-    // the id of the request pack.
+    // the id of the request pack. The packet is a then a response packet.
     if ((int)strlen(comm_data_packet.request_id) != 0) {
         for (int i = 0; i < 64; i++) {
             if (strcmp(comm_data_packet.request_id, communication_request_queue[i].request_id) == 0) {

@@ -17,5 +17,5 @@
         "flight_path.h": "c",
         "string.h": "c"
     },
-    "workbench.colorTheme": "Visual Studio 2017 Light - C++"
+    "workbench.colorTheme": "Visual Studio 2017 Dark - C++"
 }

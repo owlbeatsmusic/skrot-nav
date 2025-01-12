@@ -4,9 +4,9 @@
 extern int nav_spaceobjects_index;
 
 
-extern int nav_get_sclk(void);
+extern int nav_core_get_sclk(void);
 
-extern void nav_shutdown(void);
-extern int nav_create(void);
+extern void nav_core_shutdown(void);
+extern int nav_core_create(void);
 
 #endif

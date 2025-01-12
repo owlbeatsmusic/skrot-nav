@@ -30,7 +30,7 @@ int downlink_send_communication_data_packet(CommunicationDataPacket new_data_pac
 
     printf("%s downlink sent packet.\n\n", PRINT_DEBUG);
 
-    nav_communication_receive_packet(new_data_packet);
+    communication_receive_packet(new_data_packet);
 
     return 0;
 }

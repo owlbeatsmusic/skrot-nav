@@ -1,3 +1,13 @@
+/*
+    CORE.C
+
+    This file is the starting point of the system and contains the
+    main loop. The main objective for this file is to handle the
+    non-navigation parts of the system.
+
+    (description updated 2025-01-25)
+*/
+
 #include<unistd.h>
 #include <stdint.h>
 #include <time.h>
@@ -21,12 +31,12 @@ uint32_t sclk = 0; // clock
 Bool system_active = TRUE;
 
 /* Aka. Get time */
-int nav_get_sclk(void) {
+int nav_core_get_sclk(void) {
     sclk = (uint32_t)time(NULL) - start_time;
     return sclk;
 }
 
-void nav_shutdown(void) {
+void nav_core_shutdown(void) {
 
     // safetly shutdown all systems
 
@@ -34,30 +44,30 @@ void nav_shutdown(void) {
 }
 
 /* The main loop for the whole navigation. */
-int nav_proc_main_internal(void) {
+int nav_core_proc_main_internal(void) {
     awlib_log_t("log/log.txt", "main nav-process started\n");
 
     while (system_active) {
-        //printf("t=%d\n", nav_get_sclk());
+        //printf("t=%d\n", nav_core_get_sclk());
         
         // test:
         FlightPath fp;
-        nav_create_flight_path(&fp);
+        flightpath_create_path(&fp);
 
         system_active = FALSE;
     }
 
-    nav_shutdown();
+    nav_core_shutdown();
     return 0;
 }
 
 /* Initialize and add "spacecraft" as a object in simulated space. */
-int nav_create(void) {
+int nav_core_create(void) {
     //nav_spaceobjects_index = space_append_spaceobject(SPACECRAFT, (Vector3){0, 0, EARTH_RADIUS + 1200000}, (Vector3){8000, 0, 0}, 20);
     //if (nav_spaceobjects_index == -1) return -1;
 
     start_time = time(NULL);
 
-    nav_proc_main_internal();
+    nav_core_proc_main_internal();
     return 0;
 }
