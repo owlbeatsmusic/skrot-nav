@@ -1,7 +1,5 @@
 # SKROT-NAV
 
-Part of my high school graduation project.
-
 A navigationsystem for a debris-collecting spacecraft with device interaction, placed in a simulated earth orbit but hopefully able to be applied in real space.
 
 
@@ -9,9 +7,10 @@ A navigationsystem for a debris-collecting spacecraft with device interaction, p
  - **Engine**
     -  space
     -  renderer
- - **Navigationsystem**
+    -  downlink
+ - **Navigation System**
     -  core
-    -  communcation
+    -  communication
     -  devices
     -  flight_path
     -  position

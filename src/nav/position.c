@@ -14,17 +14,28 @@
 #include "engine/space.h"
 #include "common/vector.h"
 #include "common/print.h"
+#include "common/bool.h"
 #include "nav/communication.h"
 
 
 Vector3 last_mathematical_position;   
 Vector3 last_observed_position; 
 
+Bool waiting_for_earth_distance = FALSE;
 uint32_t last_earth_distance = 0;
+
+Bool waiting_for_radial_velocity = FALSE;
+Vector3 last_radial_velocity = {0, 0, 0};
+
+Bool waiting_for_earth_sky_angles = FALSE;
+float last_earth_sky_azimuth = 0;
+float last_earth_sky_elevation = 0;
+
 
 // Set the last observed distance from earth to the distance
 // provided in the response packet.
 int position_update_distance_from_earth(CommunicationDataPacket *comm_data_packet) {
+    waiting_for_earth_distance = FALSE;
     printf("%sdistance=%u\n", PRINT_DEBUG, comm_data_packet->distance);
     return 0;
 }
@@ -32,6 +43,8 @@ int position_update_distance_from_earth(CommunicationDataPacket *comm_data_packe
 // Create and send a communication data packet to downlink and
 // add the request id to queue.
 int position_request_distance_from_earth(uint32_t *distance) {
+
+    waiting_for_earth_distance = TRUE;
     
     CommunicationDataPacket data_packet;
     data_packet.request_earth_distance = TRUE;
@@ -39,28 +52,51 @@ int position_request_distance_from_earth(uint32_t *distance) {
     communication_create_data_packet(&data_packet, DATA_REQUEST);
     communication_request_queue_add(data_packet.packet_id, &position_update_distance_from_earth);
     communication_send_packet(&data_packet);
+
+    printf("%s%s\n", PRINT_DEBUG, communication_request_queue[0].request_id);
     
     return 0;
 }
 
 
+// Set the last observed radial velocity to the velocity
+// provided in the response packet.
+int position_update_radial_velocity(CommunicationDataPacket *comm_data_packet) {
+    waiting_for_radial_velocity = FALSE;
+    return 0;
+}
+
+// Create and send a communication data packet to downlink and
+// add the request id to queue.
 int position_request_radial_velocity(Vector3 *velocity) {
 
     CommunicationDataPacket data_packet;
     data_packet.request_radial_velocity = TRUE;
 
     communication_create_data_packet(&data_packet, DATA_REQUEST);
+    communication_request_queue_add(data_packet.packet_id, &position_update_distance_from_earth);
     communication_send_packet(&data_packet);
 
     return 0;
 }
 
+
+// Set the last observed angles on the earth sky to the angles
+// provided in the response packet.
+int position_update_earth_sky_angles(CommunicationDataPacket *comm_data_packet) {
+    waiting_for_earth_sky_angles = FALSE;
+    return 0;
+}
+
+// Create and send a communication data packet to downlink and
+// add the request id to queue.
 int position_request_earth_sky_angles(float *azimuth_angle, float *elevation_angle) {
 
     CommunicationDataPacket data_packet;
     data_packet.request_earth_sky_angles = TRUE;
 
     communication_create_data_packet(&data_packet, DATA_REQUEST);
+    communication_request_queue_add(data_packet.packet_id, &position_update_distance_from_earth);
     communication_send_packet(&data_packet);
 
     return 0;

@@ -16,6 +16,7 @@
 #include "nav/communication.h"
 #include "common/print.h"
 #include "common/id.h"
+#include "awlib_log/log.h"
 
 
 char *data_packet_type_label[] = {
@@ -37,6 +38,21 @@ int communication_request_queue_add(char request_id[], int (*function_pointer)(C
             break;
         }
     }
+    return 0;
+}
+
+// Search for index of request id and clear it from request queue
+int communication_request_queue_remove(char request_id[]) {
+    Bool found_id = FALSE;
+    for (int i = 0; i < 64; i ++) {
+        if (strcmp(communication_request_queue[i].request_id, request_id) == 0) {
+            strcpy(communication_request_queue[i].request_id, "");
+            communication_request_queue[i].function_pointer = NULL;
+            found_id = TRUE;
+            break;
+        }
+    }
+    if (found_id == FALSE) printf("%srequest_id not found in request queue.\n", PRINT_WARNING);
     return 0;
 }
 
@@ -71,9 +87,7 @@ int communication_store_packet(CommunicationDataPacket *comm_data_packet) {
 
 int communication_send_packet(CommunicationDataPacket *comm_data_packet) { // send to transmitter
 
-    printf("PACKET SENDING... : %s\n| time=%u\n| packet_id=%s\n", data_packet_type_label[comm_data_packet->data_packet_type], (unsigned int)comm_data_packet->packet_timestamp, comm_data_packet->packet_id);
-    printf("\n");
-
+    printf("PACKET SENDING... : %s\n| time=%u\n| packet_id=%s\n\n", data_packet_type_label[comm_data_packet->data_packet_type], (unsigned int)comm_data_packet->packet_timestamp, comm_data_packet->packet_id);
     int send_status = devices_transmittor_send_communication_packet(comm_data_packet);
     if (send_status == -1) {
         printf("%s failed to send packet through transmittor (code=%d))\n", PRINT_ERROR, send_status);

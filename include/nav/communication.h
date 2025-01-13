@@ -102,6 +102,7 @@ typedef struct {
 RequestQueuePair communication_request_queue[64];
 
 extern int communication_request_queue_add(char request_id[], int (*function_pointer)(CommunicationDataPacket *));
+extern int communication_request_queue_remove(char request_id[]);
 
 extern int communication_parse_event_file(FILE *SEF_file);
 extern int communication_send_view_period_file(FILE *view_period_file);
