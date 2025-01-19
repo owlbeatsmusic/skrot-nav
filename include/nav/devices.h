@@ -10,7 +10,7 @@
 */
 
 extern void devices_poweron(Device *device);
-extern void devices_shutdown(Device *deivce);
+extern void devices_shutdown(Device *device);
 
 extern int devices_radar_scan(RadarDevice *radar);
 extern void devices_radar_status(RadarDevice *radar, HealthData *health_data);

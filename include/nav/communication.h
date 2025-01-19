@@ -96,12 +96,12 @@ typedef struct {
 
 typedef struct {
     char request_id[18];
-    int (*function_pointer)(CommunicationDataPacket *);
+    void (*function_pointer)(CommunicationDataPacket *);
 } RequestQueuePair;
 
 RequestQueuePair communication_request_queue[64];
 
-extern int communication_request_queue_add(char request_id[], int (*function_pointer)(CommunicationDataPacket *));
+extern int communication_request_queue_add(char request_id[], void (*function_pointer)(CommunicationDataPacket *));
 extern int communication_request_queue_remove(char request_id[]);
 
 extern int communication_parse_event_file(FILE *SEF_file);

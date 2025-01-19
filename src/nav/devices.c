@@ -27,12 +27,12 @@ https://www.innosent.de/en/radar/
 // GENERAL
 
 void devices_poweron(Device *device) {
-
+    device->powered_on = TRUE;
     return;
 }
 
-void devices_shutdown(Device *deivce) {
-
+void devices_shutdown(Device *device) {
+    device->powered_on = FALSE;
     return;
 }
 
@@ -41,6 +41,11 @@ void devices_shutdown(Device *deivce) {
 // RADAR
 
 int devices_radar_scan(RadarDevice *radar) {
+
+    if (radar->d.powered_on == FALSE) {
+        printf("%sradar is not powered on\n", PRINT_ERROR);
+        return -1;
+    }
 
     /*  SKROT - REPLACE: IMPLEMENTATION OF RADAR HERE */
 
@@ -84,7 +89,20 @@ void device_radar_status(RadarDevice *radar, HealthData *health_data) {
 
 int devices_lidar_scan(LidarDevice *lidar) {
 
+    if (lidar->d.powered_on == FALSE) {
+        printf("%slidar is not powered on\n", PRINT_ERROR);
+        return -1;
+    }
+
+
     /*  SKROT - REPLACE: IMPLEMENTATION OF LIDAR HERE */
+     for (int i = 0; i < MAX_SPACEOBJECTS; i++) {
+        double dist = vector_distance(lidar->d.offset, spaceobjects[i].position);
+
+        if (dist <= lidar->max_range) {
+            printf("%sDetected object at (%.2f, %.2f, %.2f), distance: %.2f\n", PRINT_DEBUG, spaceobjects[i].position.x, spaceobjects[i].position.y, spaceobjects[i].position.z, dist);
+        }
+    }
 
     return 0;
 }
@@ -101,6 +119,11 @@ void device_lidar_status(LidarDevice *lidar, HealthData *health_data) {
 
 int devices_camera_scan(CameraDevice *camera) {
 
+    if (camera->d.powered_on == FALSE) {
+        printf("%scamera is not powered on\n", PRINT_ERROR);
+        return -1;
+    }
+
     /*  SKROT - REPLACE: IMPLEMENTATION OF LIDAR HERE */
 
     return 0;
@@ -116,6 +139,11 @@ void device_camera_status(CameraDevice *camera, HealthData *health_data) {
 // CLAW
 
 int devices_claw_grab(ClawDevice *claw) {
+
+    if (claw->d.powered_on == FALSE) {
+        printf("%sclaw is not powered on\n", PRINT_ERROR);
+        return -1;
+    }
     
     /*  SKROT - REPLACE: IMPLEMENTATION OF LIDAR HERE */
 
@@ -171,7 +199,7 @@ int devices_transmittor_send_communication_packet(CommunicationDataPacket *comm_
     // this must be replaced in actual space:
     downlink_receive_communication_data_packet(*comm_data_packet);
 
-    printf("%s communication packet succesfully sent (from transmittor)\n", PRINT_DONE);
+    //printf("%s communication packet succesfully sent (from transmittor)\n", PRINT_DONE);
     return 1;
 }
 

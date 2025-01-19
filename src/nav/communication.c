@@ -30,7 +30,7 @@ char *data_packet_type_label[] = {
 };
 
 // Search for first free index to create queue pair
-int communication_request_queue_add(char request_id[], int (*function_pointer)(CommunicationDataPacket *)) {
+int communication_request_queue_add(char request_id[], void (*function_pointer)(CommunicationDataPacket *)) {
     for (int i = 0; i < 64; i ++) {
         if (communication_request_queue[i].function_pointer == NULL) {
             communication_request_queue[i].function_pointer = function_pointer;
@@ -87,7 +87,7 @@ int communication_store_packet(CommunicationDataPacket *comm_data_packet) {
 
 int communication_send_packet(CommunicationDataPacket *comm_data_packet) { // send to transmitter
 
-    printf("PACKET SENDING... : %s\n| time=%u\n| packet_id=%s\n\n", data_packet_type_label[comm_data_packet->data_packet_type], (unsigned int)comm_data_packet->packet_timestamp, comm_data_packet->packet_id);
+    //printf("PACKET SENDING... : %s\n| time=%u\n| packet_id=%s\n\n", data_packet_type_label[comm_data_packet->data_packet_type], (unsigned int)comm_data_packet->packet_timestamp, comm_data_packet->packet_id);
     int send_status = devices_transmittor_send_communication_packet(comm_data_packet);
     if (send_status == -1) {
         printf("%s failed to send packet through transmittor (code=%d))\n", PRINT_ERROR, send_status);
@@ -98,7 +98,7 @@ int communication_send_packet(CommunicationDataPacket *comm_data_packet) { // se
 
 int communication_receive_packet(CommunicationDataPacket comm_data_packet) { 
 
-    printf("PACKET RECEIVED : %s\n| time=%u\n| packet_id=%s\n| request_id=%s\n", data_packet_type_label[comm_data_packet.data_packet_type], (unsigned int)comm_data_packet.packet_timestamp, comm_data_packet.packet_id, comm_data_packet.request_id);
+    //printf("PACKET RECEIVED : %s\n| time=%u\n| packet_id=%s\n| request_id=%s\n", data_packet_type_label[comm_data_packet.data_packet_type], (unsigned int)comm_data_packet.packet_timestamp, comm_data_packet.packet_id, comm_data_packet.request_id);
     printf("\n");
 
     switch (comm_data_packet.data_packet_type) {

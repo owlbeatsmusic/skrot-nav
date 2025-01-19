@@ -11,9 +11,15 @@
 #include <time.h>
 
 #include "nav/communication.h"
+#include "nav/core.h"
 #include "engine/downlink.h"
+#include "engine/space.h"
 #include "common/id.h"
 #include "common/print.h"
+#include "common/vector.h"
+
+#include "awlib_log/log.h"
+
 
 void downlink_create_communication_data_packet_internal(CommunicationDataPacket *new_data_packet, DataPacketType data_packet_type) {
 
@@ -62,7 +68,12 @@ int downlink_receive_communication_data_packet(CommunicationDataPacket received_
             strcpy(new_data_packet.request_id, received_comm_data_packet.packet_id);
 
             if (received_comm_data_packet.request_earth_distance == TRUE) {
-                new_data_packet.distance = 123456789;
+                //new_data_packet.distance = vector_distance(spaceobjects[nav_spaceobjects_index].position, earth_pos) - EARTH_RADIUS;
+                awlib_log_t("log/log.txt", "\nSPACECRAFT:\n   Position = (%f, %f, %f)\n",
+                    spaceobjects[nav_spaceobjects_index].position.x, spaceobjects[nav_spaceobjects_index].position.y, spaceobjects[nav_spaceobjects_index].position.z);
+                //awlib_log_t("log/log.txt","%s spacecraft position: %d\n", PRINT_DEBUG, spaceobjects[nav_spaceobjects_index].position.y);
+                new_data_packet.distance = vector_distance(spaceobjects[nav_spaceobjects_index].position, earth_pos) - EARTH_RADIUS;
+
             }
 
             downlink_create_communication_data_packet_internal(&new_data_packet, TELEMETRY);

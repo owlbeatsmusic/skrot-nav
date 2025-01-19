@@ -21,6 +21,8 @@ extern const float M;
 extern const float DELTA_T;
 extern const float EARTH_RADIUS;
 
+extern Vector3 earth_pos;
+
 extern const int MAX_SPACEOBJECTS;
 extern SpaceObject spaceobjects[];
 

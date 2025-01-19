@@ -1,3 +1,4 @@
+
 /*
     CORE.C
 
@@ -43,17 +44,25 @@ void nav_core_shutdown(void) {
     awlib_log_t("log/log.txt", "nav shutdown successfully\n");
 }
 
+/* nav_core_proc_main_tick */
+void nav_core_proc_main_tick(void) {
+    //printf("t=%d\n", nav_core_get_sclk());
+        
+    // test:
+    FlightPath fp;
+    flightpath_create_path(&fp);
+}
+
 /* The main loop for the whole navigation. */
 int nav_core_proc_main_internal(void) {
     awlib_log_t("log/log.txt", "main nav-process started\n");
 
     while (system_active) {
-        //printf("t=%d\n", nav_core_get_sclk());
-        
-        // test:
-        FlightPath fp;
-        flightpath_create_path(&fp);
 
+        nav_core_proc_main_tick(); 
+
+        // TODO: in actual implementation this is a loop but now 'tick' is called from space loop
+        
         system_active = FALSE;
     }
 
@@ -63,11 +72,11 @@ int nav_core_proc_main_internal(void) {
 
 /* Initialize and add "spacecraft" as a object in simulated space. */
 int nav_core_create(void) {
-    //nav_spaceobjects_index = space_append_spaceobject(SPACECRAFT, (Vector3){0, 0, EARTH_RADIUS + 1200000}, (Vector3){8000, 0, 0}, 20);
-    //if (nav_spaceobjects_index == -1) return -1;
+    nav_spaceobjects_index = space_append_spaceobject(SPACECRAFT, (Vector3){0, 0, EARTH_RADIUS + 400000}, (Vector3){8000, 0, 0}, 20);
+    if (nav_spaceobjects_index == -1) return -1;
 
     start_time = time(NULL);
 
-    nav_core_proc_main_internal();
+    //nav_core_proc_main_internal();
     return 0;
 }

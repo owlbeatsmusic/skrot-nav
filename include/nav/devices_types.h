@@ -3,12 +3,14 @@
 
 #include <stdlib.h>
 
+#include "common/bool.h"
 #include "common/vector.h"
 
 
 typedef struct {
     u_int16_t id;
     Vector3 offset;
+    Bool powered_on;
     const float mass;    // can't be updated in space => const
 } Device;
 
@@ -50,6 +52,7 @@ typedef struct {
 
 typedef struct {
     Device d;
+    double max_range;
 } LidarDevice;
 
 typedef struct {

@@ -20,7 +20,7 @@ const float EARTH_RADIUS = 6371000;
 
 Vector3 earth_pos = {0, 0, 0};
 
-int spaceobject_ammount = 100;
+int spaceobject_amount = 100;
 const int MAX_SPACEOBJECTS = 24576;
 SpaceObject spaceobjects[MAX_SPACEOBJECTS];
 
@@ -120,7 +120,7 @@ int space_start(void) {
     srand(time(NULL));
 
     // generate space debris
-    for (int i = 0; i < spaceobject_ammount; i++) {
+    for (int i = 0; i < spaceobject_amount; i++) {
         float orbit_radius_xyz_base[] = {
             (rand() % (int)EARTH_RADIUS) - EARTH_RADIUS/2, 
             (rand() % (int)EARTH_RADIUS) - EARTH_RADIUS/2,
@@ -157,24 +157,25 @@ int space_start(void) {
     //renderer_draw_orbitview(2*RENDERER_ORBIT_VIEW_WIDTH, 0, RENDERER_ORBIT_VIEW_WIDTH, RENDERER_ORBIT_VIEW_HEIGHT, 'x', 'y');
 
     // Simulate for a certain number of steps
-    int steps = 50000;
+    int steps = 500000;
     for (int step = 0; step < steps; step++) {
+
 
         // update views each X ammount of steps
         if ((step) % 100 == 1) {
-            renderer_render_screen(); 
-            renderer_initialize();
+            //renderer_render_screen(); 
+            //renderer_initialize();
 
-            renderer_render_all_views();
+            //renderer_render_all_views();
 
-            printf("time passed: %ds   (%fmin)   (%fh)\n", (int)(step * DELTA_T), (step * DELTA_T)/60, (step * DELTA_T)/3600);
-            printf("step: %d / %d\n", step, steps);
-            printf("\nSPACECRAFT:\n   Position = (%f, %f, %f) \n   Velocity = (%f, %f, %f)\n",
-               spaceobjects[nav_spaceobjects_index].position.x, spaceobjects[nav_spaceobjects_index].position.y, spaceobjects[nav_spaceobjects_index].position.z,
-               spaceobjects[nav_spaceobjects_index].velocity.x, spaceobjects[nav_spaceobjects_index].velocity.y, spaceobjects[nav_spaceobjects_index].velocity.z);
+            //printf("time passed: %ds   (%fmin)   (%fh)\n", (int)(step * DELTA_T), (step * DELTA_T)/60, (step * DELTA_T)/3600);
+            //printf("step: %d / %d\n", step, steps);
+            //printf("\nSPACECRAFT:\n   Position = (%f, %f, %f) \n   Velocity = (%f, %f, %f)\n",
+            //   spaceobjects[nav_spaceobjects_index].position.x, spaceobjects[nav_spaceobjects_index].position.y, spaceobjects[nav_spaceobjects_index].position.z,
+            //   spaceobjects[nav_spaceobjects_index].velocity.x, spaceobjects[nav_spaceobjects_index].velocity.y, spaceobjects[nav_spaceobjects_index].velocity.z);
         }
 
-        for (int i = 0; i < spaceobject_ammount; i++) {
+        for (int i = 0; i < spaceobject_amount; i++) {
 
             // update spaceobject's positions
             update_space_object_internal(&spaceobjects[i]);
@@ -254,10 +255,14 @@ int space_start(void) {
             */
         }
 
-       usleep(100);
+        if ((step) % 1000 == 0) {
+            nav_core_proc_main_tick();
+        }
+
+       usleep(10);
     }          
     
-    renderer_render_screen(); 
+    //renderer_render_screen(); 
     
     return 0;
 }
