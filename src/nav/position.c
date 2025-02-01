@@ -37,6 +37,9 @@ float last_earth_sky_elevation = 0;
 // Set the last observed distance from earth to the distance
 // provided in the response packet.
 void position_update_distance_from_earth(CommunicationDataPacket *comm_data_packet) {
+
+    communication_request_queue_remove(comm_data_packet->request_id);
+
     waiting_for_earth_distance = FALSE;
     last_earth_distance = comm_data_packet->distance;
     printf("%sdistance from earth: %d\n", PRINT_DEBUG, last_earth_distance);
@@ -55,7 +58,6 @@ void position_request_distance_from_earth(void) {
     communication_request_queue_add(data_packet.packet_id, &position_update_distance_from_earth);
     communication_send_packet(&data_packet);
 
-    //printf("%s%s\n", PRINT_DEBUG, communication_request_queue[0].request_id);
     
 }
 
@@ -63,8 +65,13 @@ void position_request_distance_from_earth(void) {
 // Set the last observed radial velocity to the velocity
 // provided in the response packet.
 void position_update_radial_velocity(CommunicationDataPacket *comm_data_packet) {
+    
+    communication_request_queue_remove(comm_data_packet->request_id);
+
     waiting_for_radial_velocity = FALSE;
     last_radial_velocity = comm_data_packet->radial_velocity;
+
+    printf("%sradial velocity from earth: %d\n", PRINT_DEBUG, last_radial_velocity);
 }
 
 // Create and send a communication data packet to downlink and
@@ -83,9 +90,14 @@ void position_request_radial_velocity(void) {
 // Set the last observed angles on the earth sky to the angles
 // provided in the response packet.
 void position_update_earth_sky_angles(CommunicationDataPacket *comm_data_packet) {
+
+    communication_request_queue_remove(comm_data_packet->request_id);
+
     waiting_for_earth_sky_angles = FALSE;
     last_earth_sky_azimuth = comm_data_packet->azimuth_angle;
     last_earth_sky_elevation = comm_data_packet->elevation_angle;
+
+    printf("%sangles on earth sky from earth: (%f; %f)\n", PRINT_DEBUG, last_earth_sky_azimuth, last_earth_sky_elevation);
 }
 
 // Create and send a communication data packet to downlink and
@@ -107,6 +119,8 @@ int position_evaluate_current_position(void) { // begin the Batch Filter
 
     // test:
     position_request_distance_from_earth();
+    position_request_radial_velocity();
+    position_request_earth_sky_angles();
 
     return 0;
 }

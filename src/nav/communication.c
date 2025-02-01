@@ -128,6 +128,7 @@ int communication_receive_packet(CommunicationDataPacket comm_data_packet) {
         for (int i = 0; i < 64; i++) {
             if (strcmp(comm_data_packet.request_id, communication_request_queue[i].request_id) == 0) {
                 communication_request_queue[i].function_pointer(&comm_data_packet);
+                break;
             }
         }
     }

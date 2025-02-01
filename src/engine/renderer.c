@@ -32,8 +32,8 @@ ScreenPixel renderer_screengrid[RENDERER_SCREEN_HEIGHT][RENDERER_SCREEN_WIDTH];
 
 View renderer_views[] = {
 	{0, 0, -1, RENDERER_SPACE_WIDTH/2, 'x', 'z'}, // 5000000
-	{1, 0, -1, RENDERER_SPACE_WIDTH, 'x', 'z'},
-	{2, 0, -1, RENDERER_SPACE_WIDTH, 'x', 'y'},
+	{1, 0, -1, RENDERER_SPACE_WIDTH,   'x', 'z'},
+	{2, 0, -1, RENDERER_SPACE_WIDTH,   'x', 'y'},
 };
 
 const ScreenPixel renderer_spaceobject_type_color[] = {

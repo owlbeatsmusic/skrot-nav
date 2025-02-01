@@ -67,7 +67,6 @@ Vector3 gravitational_force_internal(SpaceObject obj) {
     
     // Normalize the position vector to get direction
     // by dividing the vector by its own length
-    
     Vector3 r_hat = {
         (obj.position.x - earth_pos.x) / r,
         (obj.position.y - earth_pos.y) / r,
