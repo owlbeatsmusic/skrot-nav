@@ -17,7 +17,8 @@
         "flight_path.h": "c",
         "string.h": "c",
         "downlink.h": "c",
-        "space.h": "c"
+        "space.h": "c",
+        "position.h": "c"
     },
     "workbench.colorTheme": "Visual Studio 2017 Light - C++"
 }

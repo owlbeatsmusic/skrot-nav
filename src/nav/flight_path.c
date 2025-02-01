@@ -44,7 +44,7 @@ int calculate_course_delta_velocity_internal(void) {
 /*   Objects   */
 /* ----------- */
 
-void update_tracked_objects_internal(int spaceobjects_index) {
+void update_tracked_objects_internal(void) {
 
     return;
 }
@@ -85,8 +85,9 @@ int flightpath_update_path(FlightPath *flight_path) {
 
 int flightpath_create_path(FlightPath *flight_path) {
 
-    // test:
     position_evaluate_current_position();
+    update_tracked_objects_internal();
+    
 
     return 0;
 }

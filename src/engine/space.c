@@ -148,30 +148,25 @@ int space_start(void) {
             0.5};*/
     }
 
-	//renderer_views[0].center_object_index = 100;
-
-
     renderer_render_all_views();
-    //renderer_draw_orbitview(RENDERER_ORBIT_VIEW_WIDTH, 0, RENDERER_ORBIT_VIEW_WIDTH, RENDERER_ORBIT_VIEW_HEIGHT, 'x', 'z');
-    //renderer_draw_orbitview(2*RENDERER_ORBIT_VIEW_WIDTH, 0, RENDERER_ORBIT_VIEW_WIDTH, RENDERER_ORBIT_VIEW_HEIGHT, 'x', 'y');
 
     // Simulate for a certain number of steps
-    int steps = 500000;
+    int steps = 1500000;
     for (int step = 0; step < steps; step++) {
 
 
         // update views each X ammount of steps
-        if ((step) % 100 == 1) {
-            //renderer_render_screen(); 
-            //renderer_initialize();
+        if ((step) % 10000 == 1) {
+            renderer_render_screen(); 
+            renderer_initialize();
 
-            //renderer_render_all_views();
+            renderer_render_all_views();
 
-            //printf("time passed: %ds   (%fmin)   (%fh)\n", (int)(step * DELTA_T), (step * DELTA_T)/60, (step * DELTA_T)/3600);
-            //printf("step: %d / %d\n", step, steps);
-            //printf("\nSPACECRAFT:\n   Position = (%f, %f, %f) \n   Velocity = (%f, %f, %f)\n",
-            //   spaceobjects[nav_spaceobjects_index].position.x, spaceobjects[nav_spaceobjects_index].position.y, spaceobjects[nav_spaceobjects_index].position.z,
-            //   spaceobjects[nav_spaceobjects_index].velocity.x, spaceobjects[nav_spaceobjects_index].velocity.y, spaceobjects[nav_spaceobjects_index].velocity.z);
+            printf("time passed: %ds   (%fmin)   (%fh)\n", (int)(step * DELTA_T), (step * DELTA_T)/60, (step * DELTA_T)/3600);
+            printf("step: %d / %d\n", step, steps);
+            printf("\nSPACECRAFT:\n   Position = (%f, %f, %f) \n   Velocity = (%f, %f, %f)\n",
+               spaceobjects[nav_spaceobjects_index].position.x, spaceobjects[nav_spaceobjects_index].position.y, spaceobjects[nav_spaceobjects_index].position.z,
+               spaceobjects[nav_spaceobjects_index].velocity.x, spaceobjects[nav_spaceobjects_index].velocity.y, spaceobjects[nav_spaceobjects_index].velocity.z);
         }
 
         for (int i = 0; i < spaceobject_amount; i++) {
@@ -261,7 +256,7 @@ int space_start(void) {
        usleep(10);
     }          
     
-    //renderer_render_screen(); 
+    renderer_render_screen(); 
     
     return 0;
 }

@@ -99,7 +99,7 @@ int communication_send_packet(CommunicationDataPacket *comm_data_packet) { // se
 int communication_receive_packet(CommunicationDataPacket comm_data_packet) { 
 
     //printf("PACKET RECEIVED : %s\n| time=%u\n| packet_id=%s\n| request_id=%s\n", data_packet_type_label[comm_data_packet.data_packet_type], (unsigned int)comm_data_packet.packet_timestamp, comm_data_packet.packet_id, comm_data_packet.request_id);
-    printf("\n");
+    //printf("\n");
 
     switch (comm_data_packet.data_packet_type) {
         case COMMAND:

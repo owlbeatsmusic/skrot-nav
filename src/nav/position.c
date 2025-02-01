@@ -42,7 +42,7 @@ void position_update_distance_from_earth(CommunicationDataPacket *comm_data_pack
 
     waiting_for_earth_distance = FALSE;
     last_earth_distance = comm_data_packet->distance;
-    printf("%sdistance from earth: %d\n", PRINT_DEBUG, last_earth_distance);
+    //printf("%sdistance from earth: %d\n", PRINT_DEBUG, last_earth_distance);
 }
 
 // Create and send a communication data packet to downlink and
@@ -71,7 +71,7 @@ void position_update_radial_velocity(CommunicationDataPacket *comm_data_packet) 
     waiting_for_radial_velocity = FALSE;
     last_radial_velocity = comm_data_packet->radial_velocity;
 
-    printf("%sradial velocity from earth: %d\n", PRINT_DEBUG, last_radial_velocity);
+    //printf("%sradial velocity from earth: %d\n", PRINT_DEBUG, last_radial_velocity);
 }
 
 // Create and send a communication data packet to downlink and
@@ -97,7 +97,7 @@ void position_update_earth_sky_angles(CommunicationDataPacket *comm_data_packet)
     last_earth_sky_azimuth = comm_data_packet->azimuth_angle;
     last_earth_sky_elevation = comm_data_packet->elevation_angle;
 
-    printf("%sangles on earth sky from earth: (%f; %f)\n", PRINT_DEBUG, last_earth_sky_azimuth, last_earth_sky_elevation);
+    //printf("%sangles on earth sky from earth: (%f; %f)\n", PRINT_DEBUG, last_earth_sky_azimuth, last_earth_sky_elevation);
 }
 
 // Create and send a communication data packet to downlink and
