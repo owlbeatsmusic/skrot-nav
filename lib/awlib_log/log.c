@@ -20,7 +20,7 @@ int awlib_log_create(char *file_path) {
 }
 
 int awlib_log(char *file_path, char *input, ...) {
-	return 0;
+	//return 0;
 	FILE *log_file = fopen(file_path, "a");
 	awlib_log_checkfile_internal(log_file);
 
@@ -43,7 +43,7 @@ int awlib_log(char *file_path, char *input, ...) {
 }
 
 int awlib_log_t(char *file_path, char *input, ...) {
-	
+
 	return 0;
 
 	FILE *log_file = fopen(file_path, "a");

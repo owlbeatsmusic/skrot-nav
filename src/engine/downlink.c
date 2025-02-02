@@ -68,12 +68,19 @@ int downlink_receive_communication_data_packet(CommunicationDataPacket received_
             strcpy(new_data_packet.request_id, received_comm_data_packet.packet_id);
 
             if (received_comm_data_packet.request_earth_distance == TRUE) {
-                //new_data_packet.distance = vector_distance(spaceobjects[nav_spaceobjects_index].position, earth_pos) - EARTH_RADIUS;
-                awlib_log_t("log/log.txt", "\nSPACECRAFT:\n   Position = (%f, %f, %f)\n",
-                    spaceobjects[nav_spaceobjects_index].position.x, spaceobjects[nav_spaceobjects_index].position.y, spaceobjects[nav_spaceobjects_index].position.z);
+                //awlib_log_t("log/log.txt", "\nSPACECRAFT:\n   Position = (%f, %f, %f)\n",
+                //    spaceobjects[nav_spaceobjects_index].position.x, spaceobjects[nav_spaceobjects_index].position.y, spaceobjects[nav_spaceobjects_index].position.z);
                 //awlib_log_t("log/log.txt","%s spacecraft position: %d\n", PRINT_DEBUG, spaceobjects[nav_spaceobjects_index].position.y);
                 new_data_packet.distance = vector_distance(spaceobjects[nav_spaceobjects_index].position, earth_pos) - EARTH_RADIUS;
 
+            }
+            if (received_comm_data_packet.request_radial_velocity == TRUE) {
+
+                new_data_packet.radial_velocity = 0;
+
+            }
+            if (received_comm_data_packet.request_earth_sky_angles == TRUE) {
+                
             }
 
             downlink_create_communication_data_packet_internal(&new_data_packet, TELEMETRY);

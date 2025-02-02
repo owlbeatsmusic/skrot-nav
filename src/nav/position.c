@@ -15,13 +15,16 @@
 #include "common/vector.h"
 #include "common/print.h"
 #include "common/bool.h"
+#include "nav/core.h"
 #include "nav/communication.h"
 
 #include "awlib_log/log.h"
 
 
-Vector3 last_mathematical_position;   
+//Vector3 last_mathematical_position;   
 Vector3 last_observed_position; 
+
+Bool waiting_for_position = FALSE;
 
 Bool waiting_for_earth_distance = FALSE;
 uint32_t last_earth_distance = 0;
@@ -121,6 +124,11 @@ int position_evaluate_current_position(void) { // begin the Batch Filter
     position_request_distance_from_earth();
     position_request_radial_velocity();
     position_request_earth_sky_angles();
+
+    // TODO: wait somehow for the data to be received
+
+    // TODO: actually calculate the position
+    last_observed_position = spaceobjects[nav_spaceobjects_index].position;
 
     return 0;
 }

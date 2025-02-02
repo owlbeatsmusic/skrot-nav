@@ -20,9 +20,26 @@ const float EARTH_RADIUS = 6371000;
 
 Vector3 earth_pos = {0, 0, 0};
 
-int spaceobject_amount = 100;
-const int MAX_SPACEOBJECTS = 24576;
+int spaceobject_amount = 25000;
+const int MAX_SPACEOBJECTS = 34000;
 SpaceObject spaceobjects[MAX_SPACEOBJECTS];
+
+Vector3 vector_cross_product(Vector3 a, Vector3 b) {
+    return (Vector3){
+        a.y * b.z - a.z * b.y,
+        a.z * b.x - a.x * b.z,
+        a.x * b.y - a.y * b.x
+    };
+}
+
+float vector_magnitude(Vector3 v) {
+    return sqrt(v.x * v.x + v.y * v.y + v.z * v.z);
+}
+
+Vector3 vector_normalize(Vector3 v) {
+    float magnitude = vector_magnitude(v);
+    return (Vector3){v.x / magnitude, v.y / magnitude, v.z / magnitude};
+}
 
 
 // create spaceobject at first available index in spaceobjects[]
@@ -34,6 +51,15 @@ int space_append_spaceobject(SpaceObjectType type, Vector3 position, Vector3 vel
         if (i >= MAX_SPACEOBJECTS) return -1;
         i++;
     }
+
+    int r = vector_distance(position, earth_pos);
+    float orbital_velocity = sqrt(G * M / r);
+
+    // ???
+    Vector3 up = {0, 0, 1}; // Arbitrary vector not parallel to position
+    Vector3 velocity_direction = vector_cross_product(position, up);
+    velocity_direction = vector_normalize(velocity_direction);
+
     empty_index = i;
     SpaceObject temp_space_object = {
         type,
@@ -42,9 +68,9 @@ int space_append_spaceobject(SpaceObjectType type, Vector3 position, Vector3 vel
             position.y, 
             position.z},
         (Vector3){
-            velocity.x,  //random_direction[2]*sqrt(G * M / (1+random_direction[2])), 
-            velocity.y,   //sqrt(G * M / (1+orbit_radius_xyz[1])),  //random_direction[0]*sqrt(G * M / (1+random_direction[0])), 
-            velocity.z} ,//sqrt(G * M / (1+orbit_radius_xyz[0]))}, //random_direction[1]*sqrt(G * M / (1+random_direction[1]))}, 
+            velocity_direction.x * orbital_velocity,  //random_direction[2]*sqrt(G * M / (1+random_direction[2])), 
+            velocity_direction.y * orbital_velocity,   //sqrt(G * M / (1+orbit_radius_xyz[1])),  //random_direction[0]*sqrt(G * M / (1+random_direction[0])), 
+            velocity_direction.z * orbital_velocity} , //sqrt(G * M / (1+orbit_radius_xyz[0]))}, //random_direction[1]*sqrt(G * M / (1+random_direction[1]))}, 
         mass
     };
     spaceobjects[empty_index] = temp_space_object;
@@ -156,7 +182,9 @@ int space_start(void) {
 
 
         // update views each X ammount of steps
-        if ((step) % 10000 == 1) {
+        
+        
+        if ((step) % 5000 == 1) {
             renderer_render_screen(); 
             renderer_initialize();
 
@@ -167,7 +195,11 @@ int space_start(void) {
             printf("\nSPACECRAFT:\n   Position = (%f, %f, %f) \n   Velocity = (%f, %f, %f)\n",
                spaceobjects[nav_spaceobjects_index].position.x, spaceobjects[nav_spaceobjects_index].position.y, spaceobjects[nav_spaceobjects_index].position.z,
                spaceobjects[nav_spaceobjects_index].velocity.x, spaceobjects[nav_spaceobjects_index].velocity.y, spaceobjects[nav_spaceobjects_index].velocity.z);
+            nav_core_proc_main_tick();
+
         }
+        
+        
 
         for (int i = 0; i < spaceobject_amount; i++) {
 
@@ -249,9 +281,12 @@ int space_start(void) {
             */
         }
 
-        if ((step) % 1000 == 0) {
+        /*
+        if ((step) % 10 == 0) {
             nav_core_proc_main_tick();
+            printf("time passed: %ds   (%fmin)   (%fh)\n", (int)(step * DELTA_T), (step * DELTA_T)/60, (step * DELTA_T)/3600);
         }
+        */
 
        usleep(10);
     }          

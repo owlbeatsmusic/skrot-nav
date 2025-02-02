@@ -15,6 +15,7 @@
 #include "engine/space.h"
 #include "common/vector.h"
 #include "common/print.h"
+#include "awlib_log/log.h"
 
 /*
 https://sv.wikipedia.org/wiki/Radar
@@ -41,42 +42,39 @@ void devices_shutdown(Device *device) {
 // RADAR
 
 int devices_radar_scan(RadarDevice *radar) {
-
     if (radar->d.powered_on == FALSE) {
         printf("%sradar is not powered on\n", PRINT_ERROR);
         return -1;
     }
 
-    /*  SKROT - REPLACE: IMPLEMENTATION OF RADAR HERE */
+    for (int i = 0; i < MAX_SPACEOBJECTS; i++) {
+        double dist = vector_distance(radar->d.offset, spaceobjects[i].position);
+        if (dist > radar->max_range)
+            continue; 
 
-    for (float azimuth = radar->from_azimuth_angle; azimuth < radar->to_azimuth_angle; azimuth += radar->azimuth_step_size) {
-        for (float elevation = radar->from_elevation_angle; elevation < radar->to_elevation_angle; elevation += radar->elevation_step_size) {
-            for (int i = 0; i < MAX_SPACEOBJECTS; i++) {
-                double dist = vector_distance(radar->d.offset, spaceobjects[i].position);
+        double dx = spaceobjects[i].position.x - radar->d.offset.x;
+        double dy = spaceobjects[i].position.y - radar->d.offset.y;
+        double dz = spaceobjects[i].position.z - radar->d.offset.z;
 
-                // Calculate azimuth and elevation to the object
-                /*
-                double object_azimuth = atan2(spaceobjects[i].y - radar->x, spaceobjects[i].x - radar->x) * 180.0 / M_PI;
-                double object_elevation = atan2(spaceobjects[i].z - radar->z, sqrt((spaceobjects[i].x - radar->x) * (spaceobjects[i].x - radar->x) + 
-                                                                            (spaceobjects[i].y - radar->y) * (spaceobjects[i].y - radar->y))) * 180.0 / M_PI;
-                */
-                double object_azimuth = atanf(fabs(radar->d.offset.y - spaceobjects[i].position.y) / fabs(radar->d.offset.x - spaceobjects[i].position.x));
-                double object_elevation = atanf(fabs(radar->d.offset.z - spaceobjects[i].position.z) / fabs(radar->d.offset.x - spaceobjects[i].position.x));
+        // Calculate azimuth and elevation
+        double object_azimuth = atan2(dy, dx) * 180.0 / M_PI;
+        if (object_azimuth < 0)
+            object_azimuth += 360.0;
 
-                // Normalize angles to 0-360 degrees for azimuth
-                if (object_azimuth < 0) object_azimuth += 360.0;
+        double horizontal_distance = sqrt(dx * dx + dy * dy);
+        double object_elevation = atan2(dz, horizontal_distance) * 180.0 / M_PI;
 
-                // Check if the object is within the current azimuth and elevation sweep and within range
-                if (dist <= radar->max_range && 
-                    fabs(object_azimuth - azimuth) < radar->azimuth_step_size &&
-                    fabs(object_elevation - elevation) < radar->elevation_step_size) {
-                    printf("Detected object at (%.2f, %.2f, %.2f), distance: %.2f\n", spaceobjects[i].position.x, spaceobjects[i].position.y, spaceobjects[i].position.z, dist);
-                }
-            }
+        // Check if object falls within the radar scanning limits.
+        if (object_azimuth >= radar->from_azimuth_angle && object_azimuth <= radar->to_azimuth_angle &&
+            object_elevation >= radar->from_elevation_angle && object_elevation <= radar->to_elevation_angle)
+        {
+            printf("Detected object at (%.2f, %.2f, %.2f), distance: %.2f\n", 
+                   spaceobjects[i].position.x, spaceobjects[i].position.y, spaceobjects[i].position.z, dist);
         }
     }
     return 0;
 }
+
 
 void device_radar_status(RadarDevice *radar, HealthData *health_data) {
 
