@@ -1,4 +1,3 @@
-
 /*
     CORE.C
 
@@ -46,11 +45,11 @@ void nav_core_shutdown(void) {
 
 /* nav_core_proc_main_tick */
 void nav_core_proc_main_tick(void) {
-    //printf("t=%d\n", nav_core_get_sclk());
-    
+
     // test:
     FlightPath fp;
     flightpath_create_path(&fp);
+
 }
 
 /* The main loop for the whole navigation. */

@@ -1,3 +1,13 @@
+/*
+    SPACE.C
+
+    This file handles the space simulation. The main objective is 
+    to simulate the movement of everything in orbit around the earth.
+
+    (description updated: 2025-02-07)
+*/
+
+
 #include <unistd.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -20,26 +30,12 @@ const float EARTH_RADIUS = 6371000;
 
 Vector3 earth_pos = {0, 0, 0};
 
-int spaceobject_amount = 25000;
+int spaceobject_amount = 100;
 const int MAX_SPACEOBJECTS = 34000;
 SpaceObject spaceobjects[MAX_SPACEOBJECTS];
 
-Vector3 vector_cross_product(Vector3 a, Vector3 b) {
-    return (Vector3){
-        a.y * b.z - a.z * b.y,
-        a.z * b.x - a.x * b.z,
-        a.x * b.y - a.y * b.x
-    };
-}
 
-float vector_magnitude(Vector3 v) {
-    return sqrt(v.x * v.x + v.y * v.y + v.z * v.z);
-}
-
-Vector3 vector_normalize(Vector3 v) {
-    float magnitude = vector_magnitude(v);
-    return (Vector3){v.x / magnitude, v.y / magnitude, v.z / magnitude};
-}
+/*   CALCULATIONS    */
 
 
 // create spaceobject at first available index in spaceobjects[]
@@ -52,12 +48,13 @@ int space_append_spaceobject(SpaceObjectType type, Vector3 position, Vector3 vel
         i++;
     }
 
+    // calculate orbital velocity
     int r = vector_distance(position, earth_pos);
     float orbital_velocity = sqrt(G * M / r);
 
-    // ???
-    Vector3 up = {0, 0, 1}; // Arbitrary vector not parallel to position
-    Vector3 velocity_direction = vector_cross_product(position, up);
+    // calculate velocity direction
+    Vector3 temp_vector = {0, 0, 1}; 
+    Vector3 velocity_direction = vector_cross_product(position, temp_vector);
     velocity_direction = vector_normalize(velocity_direction);
 
     empty_index = i;
@@ -78,21 +75,15 @@ int space_append_spaceobject(SpaceObjectType type, Vector3 position, Vector3 vel
 }
 
 
-
-        
-/*   CALCULATIONS    */
-
 // Compute gravitational force vector acting on object due to Earth
 Vector3 gravitational_force_internal(SpaceObject obj) {
     Vector3 force;
+
+    // size of force
     float r = vector_distance(obj.position, earth_pos);
-    
-    // Calculate the magnitude of the gravitational force (magnitude meaning size / strength)
-    //               = "size / length"
     float F_mag = (G * M * obj.mass) / (r * r);
     
-    // Normalize the position vector to get direction
-    // by dividing the vector by its own length
+    // direction of force
     Vector3 r_hat = {
         (obj.position.x - earth_pos.x) / r,
         (obj.position.y - earth_pos.y) / r,
@@ -107,10 +98,8 @@ Vector3 gravitational_force_internal(SpaceObject obj) {
     return force;
 }
 
-// Update position and velocity of the space object
-// eulers method
+// update position and velocity of the space object
 void update_space_object_internal(SpaceObject *obj) {
-    // Compute gravitational force acting on the object
     Vector3 force = gravitational_force_internal(*obj);
     
     // (F = ma)
@@ -121,13 +110,13 @@ void update_space_object_internal(SpaceObject *obj) {
     };
 
 
-    // Update postition (s = s + v * dt) formelsamling s.44
+    // Update position (s = s + v * dt)
     // DE: s(t + dt) = s(t) + s'(t) * dt  
     obj->position.x += obj->velocity.x * DELTA_T;
     obj->position.y += obj->velocity.y * DELTA_T;
     obj->position.z += obj->velocity.z * DELTA_T;
 
-    // Update velocity (v = v + a * dt) formelsamling s.44
+    // Update velocity (v = v + a * dt)
     // DE: s'(t + dt) = s'(t) + s''(t) * dt
     obj->velocity.x += acceleration.x * DELTA_T;
     obj->velocity.y += acceleration.y * DELTA_T;
@@ -153,37 +142,23 @@ int space_start(void) {
         };
         float orbit_radius_xyz[3];
 
-        // create random postions in x, y and z. Normalize and 
+        // create random positions in x, y and z. Normalize and 
         // multiply by earth radius for point around sphere(earth)
         for (int i = 0; i < 3; i++) {
             orbit_radius_xyz[i] = orbit_radius_xyz_base[i] * (1/sqrt(pow(orbit_radius_xyz_base[0], 2) + pow(orbit_radius_xyz_base[1], 2) + pow(orbit_radius_xyz_base[2], 2))) * (EARTH_RADIUS + 700000 + rand() % 1000000);
-            //printf("xyz=%f\n", orbit_radius_xyz_base[i]);
         }
 
         space_append_spaceobject(DEBRIS, (Vector3){orbit_radius_xyz[0], orbit_radius_xyz[1], orbit_radius_xyz[2]}, (Vector3){0, 0, 0}, 0.5);
-        /*SpaceObject temp_space_object = {
-            DEBRIS,
-            (Vector3){
-                orbit_radius_xyz[0], 
-                orbit_radius_xyz[1], 
-                orbit_radius_xyz[2]},                   // TODO : random runt hela jorden skrot med rätt hastighet - hjälp.
-            (Vector3){
-                0,  //random_direction[2]*sqrt(G * M / (1+random_direction[2])), 
-                0,//,sqrt(G * M / (1+orbit_radius_xyz[1])),  //random_direction[0]*sqrt(G * M / (1+random_direction[0])), 
-                0},//sqrt(G * M / (1+orbit_radius_xyz[0]))}, //random_direction[1]*sqrt(G * M / (1+random_direction[1]))}, 
-            0.5};*/
     }
 
     renderer_render_all_views();
 
-    // Simulate for a certain number of steps
-    int steps = 1500000;
+    // simulate for a certain number of steps
+    int steps = 3000000;
     for (int step = 0; step < steps; step++) {
 
 
-        // update views each X ammount of steps
-        
-        
+        // update views each X amount of steps
         if ((step) % 5000 == 1) {
             renderer_render_screen(); 
             renderer_initialize();
@@ -208,7 +183,6 @@ int space_start(void) {
 
   
             // update screen information
-
 	        for (int j = 0; j < 3; j++) {
                 int pos_x = 0;
                 int pos_y = 0;

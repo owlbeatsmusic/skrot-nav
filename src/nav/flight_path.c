@@ -69,8 +69,8 @@ RadarDevice radar = {
 
 void update_tracked_objects_internal(void) {
 
+    // TODO: this is just for testing purposes as we don't have the actual data
     int k = 0;
-
     for (int i = 0; i < MAX_SPACEOBJECTS; i++) {
         double dist = vector_distance(spaceobjects[nav_spaceobjects_index].position, spaceobjects[i].position);
         if (dist < 10000 && i != nav_spaceobjects_index) {

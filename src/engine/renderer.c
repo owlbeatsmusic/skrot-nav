@@ -1,3 +1,13 @@
+/*
+    RENDERER.C
+
+    This file handles the graphical user interface. The main
+	objective is to render the space simulation in a simple 
+	and quick way.
+
+    (description updated: 2025-02-07)
+*/
+
 #include <stdio.h>
 #include <string.h>
 #include "engine/renderer.h"
@@ -31,7 +41,7 @@ const int RENDERER_SPACE_WIDTH = 20000000;
 ScreenPixel renderer_screengrid[RENDERER_SCREEN_HEIGHT][RENDERER_SCREEN_WIDTH];
 
 View renderer_views[] = {
-	{0, 0, -1, 50000, 'x', 'z'}, // 5000000
+	{0, 0, -1, 5000000, 'x', 'z'}, // 5000000
 	{1, 0, -1, RENDERER_SPACE_WIDTH,   'x', 'z'},
 	{2, 0, -1, RENDERER_SPACE_WIDTH,   'x', 'y'},
 };

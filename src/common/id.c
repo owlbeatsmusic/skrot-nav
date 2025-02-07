@@ -1,3 +1,11 @@
+/*
+    ID.C
+
+    This file handles ID:s for packets, devices, etc.
+
+    (description updated: 2025-02-07)
+*/
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <time.h>

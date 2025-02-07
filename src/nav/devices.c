@@ -47,6 +47,9 @@ int devices_radar_scan(RadarDevice *radar) {
         return -1;
     }
 
+
+    /*  SKROT - REPLACE: IMPLEMENTATION OF RADAR HERE vvv */
+
     for (int i = 0; i < MAX_SPACEOBJECTS; i++) {
         double dist = vector_distance(radar->d.offset, spaceobjects[i].position);
         if (dist > radar->max_range)
@@ -93,7 +96,7 @@ int devices_lidar_scan(LidarDevice *lidar) {
     }
 
 
-    /*  SKROT - REPLACE: IMPLEMENTATION OF LIDAR HERE */
+    /*  SKROT - REPLACE: IMPLEMENTATION OF LIDAR HERE vvv */
      for (int i = 0; i < MAX_SPACEOBJECTS; i++) {
         double dist = vector_distance(lidar->d.offset, spaceobjects[i].position);
 
@@ -122,7 +125,7 @@ int devices_camera_scan(CameraDevice *camera) {
         return -1;
     }
 
-    /*  SKROT - REPLACE: IMPLEMENTATION OF LIDAR HERE */
+    /*  SKROT - REPLACE: IMPLEMENTATION OF CAMERA HERE */
 
     return 0;
 }
@@ -143,7 +146,7 @@ int devices_claw_grab(ClawDevice *claw) {
         return -1;
     }
     
-    /*  SKROT - REPLACE: IMPLEMENTATION OF LIDAR HERE */
+    /*  SKROT - REPLACE: IMPLEMENTATION OF CLAW HERE */
 
     return 0;
 }
@@ -186,18 +189,19 @@ int devices_adjust_solar_panels(SolarPanelDevice *solar_panel, Vector3 current_p
 
 // TRANSMITTOR
 
-void devices_transmittor_status(TransmittorDevice *transmittor, HealthData *health_data) {
+void devices_transmitter_status(TransmitterDevice *transmitter, HealthData *health_data) {
 
     return;
 }
 
-int devices_transmittor_send_communication_packet(CommunicationDataPacket *comm_data_packet) {
+int devices_transmitter_send_communication_packet(CommunicationDataPacket *comm_data_packet) {
 
-    /*  SKROT - INSERT: IMPLEMENTATION OF TRANSMITTOR SEND HERE (return -1 if failed & run analysis) */
+    /*  SKROT - INSERT: IMPLEMENTATION OF TRANSMITTER SEND HERE (return -1 if failed & run analysis) */
+    
     // this must be replaced in actual space:
     downlink_receive_communication_data_packet(*comm_data_packet);
 
-    //printf("%s communication packet succesfully sent (from transmittor)\n", PRINT_DONE);
+    //printf("%s communication packet successfully sent (from transmitter)\n", PRINT_DONE);
     return 1;
 }
 

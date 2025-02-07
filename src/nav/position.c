@@ -120,14 +120,13 @@ void position_request_earth_sky_angles(void) {
 
 int position_evaluate_current_position(void) { // begin the Batch Filter
 
-    // test:
     position_request_distance_from_earth();
     position_request_radial_velocity();
     position_request_earth_sky_angles();
 
-    // TODO: wait somehow for the data to be received
+    // TODO: wait for the data to be received and calculate position
 
-    // TODO: actually calculate the position
+    // TODO: this is just for testing purposes as we don't have the actual data
     last_observed_position = spaceobjects[nav_spaceobjects_index].position;
 
     return 0;
@@ -138,8 +137,6 @@ int position_check_for_collisions_internal(SpaceObject *robot) {
     return 0;
 }
 
-
-/* Can also be self. */
 Vector3 position_predict_future_position_internal(SpaceObject obj, float delta_time) {
     Vector3 v3 = {0, 0, 0};
     return v3;

@@ -76,7 +76,7 @@ typedef struct {
 typedef struct {
     Device d;  
     int size;
-} TransmittorDevice;
+} TransmitterDevice;
 
 typedef struct {
     Device d;  

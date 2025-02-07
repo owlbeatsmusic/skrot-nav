@@ -1,3 +1,12 @@
+/*
+    PRINT.C
+
+    This file contains the print template codes for 
+    better output readability.
+
+    (description updated: 2025-02-07)
+*/
+
 #include "common/print.h"
 
 const char PRINT_WARNING[] = "[\033[0;33mwarning\033[0m]:";

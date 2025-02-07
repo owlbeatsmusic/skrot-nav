@@ -88,9 +88,9 @@ int communication_store_packet(CommunicationDataPacket *comm_data_packet) {
 int communication_send_packet(CommunicationDataPacket *comm_data_packet) { // send to transmitter
 
     //printf("PACKET SENDING... : %s\n| time=%u\n| packet_id=%s\n\n", data_packet_type_label[comm_data_packet->data_packet_type], (unsigned int)comm_data_packet->packet_timestamp, comm_data_packet->packet_id);
-    int send_status = devices_transmittor_send_communication_packet(comm_data_packet);
+    int send_status = devices_transmitter_send_communication_packet(comm_data_packet);
     if (send_status == -1) {
-        printf("%s failed to send packet through transmittor (code=%d))\n", PRINT_ERROR, send_status);
+        printf("%s failed to send packet through transmitter (code=%d))\n", PRINT_ERROR, send_status);
     }
 
     return 0;
