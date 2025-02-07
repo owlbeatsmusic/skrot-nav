@@ -1,7 +1,7 @@
 # SKROT-NAV
 A navigation system for a debris-collecting spacecraft, placed in a simulated earth orbit with the idea of being able to be used in real space. This code is part of my upper secondary school graduation project.
 
-![screenshot of skrot-nav from 2025-02-07](https://github.com/owlbeatsmusic/skrot-nav/blob/main/docs/screenshot_2025-02-07.png?raw=true)
+![screenshot of skrot-nav from 2025-02-07](https://github.com/owlbeatsmusic/skrot-nav/blob/main/docs/images/screenshot_2025-02-07.png?raw=true)
 
 
 ### How to use
