@@ -30,7 +30,7 @@ const float EARTH_RADIUS = 6371000;
 
 Vector3 earth_pos = {0, 0, 0};
 
-int spaceobject_amount = 100;
+int spaceobject_amount = 20000;
 const int MAX_SPACEOBJECTS = 34000;
 SpaceObject spaceobjects[MAX_SPACEOBJECTS];
 
@@ -159,7 +159,7 @@ int space_start(void) {
 
 
         // update views each X amount of steps
-        if ((step) % 5000 == 1) {
+        if ((step) % 100 == 1) {
             renderer_render_screen(); 
             renderer_initialize();
 
@@ -262,7 +262,7 @@ int space_start(void) {
         }
         */
 
-       usleep(10);
+       //usleep(10);
     }          
     
     renderer_render_screen(); 

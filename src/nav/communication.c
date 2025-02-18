@@ -1,10 +1,10 @@
 /*
     COMMUNICATION.C
 
-    This file handles communication between uplink and downlink
+    This file handles communication.
     additionally between subsystems within the navigation system.
 
-    (description updated: 2025-01-12)
+    (description updated: 2025-02-18)
 */
 
 #include <stdlib.h>
