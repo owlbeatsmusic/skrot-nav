@@ -79,7 +79,7 @@ int devices_radar_scan(RadarDevice *radar) {
 }
 
 
-void device_radar_status(RadarDevice *radar, HealthData *health_data) {
+void device_radar_status(RadarDevice *radar, HealthDataPacket *health_data) {
 
     return;
 }
@@ -108,7 +108,7 @@ int devices_lidar_scan(LidarDevice *lidar) {
     return 0;
 }
 
-void device_lidar_status(LidarDevice *lidar, HealthData *health_data) {
+void device_lidar_status(LidarDevice *lidar, HealthDataPacket *health_data) {
 
     return;
 }
@@ -130,7 +130,7 @@ int devices_camera_scan(CameraDevice *camera) {
     return 0;
 }
 
-void device_camera_status(CameraDevice *camera, HealthData *health_data) {
+void device_camera_status(CameraDevice *camera, HealthDataPacket *health_data) {
 
     return;
 }
@@ -151,7 +151,7 @@ int devices_claw_grab(ClawDevice *claw) {
     return 0;
 }
 
-void device_claw_status(ClawDevice *claw, HealthData *health_data) {
+void device_claw_status(ClawDevice *claw, HealthDataPacket *health_data) {
 
     return;
 }
@@ -162,7 +162,7 @@ void device_claw_status(ClawDevice *claw, HealthData *health_data) {
 // BATTERY
 
 // checks information about battery (eg: temperature)
-void devices_battery_status(BatteryDevice *battery_device, HealthData *health_data) {
+void devices_battery_status(BatteryDevice *battery_device, HealthDataPacket *health_data) {
 
     return;
 }
@@ -174,7 +174,7 @@ void devices_battery_status(BatteryDevice *battery_device, HealthData *health_da
 
 // updates information about solar panel (eg: sunlight coverage)
 
-void devices_solarpanel_status(SolarPanelDevice *solar_panel, HealthData *health_data) {
+void devices_solarpanel_status(SolarPanelDevice *solar_panel, HealthDataPacket *health_data) {
 
     return;
 }
@@ -189,7 +189,7 @@ int devices_adjust_solar_panels(SolarPanelDevice *solar_panel, Vector3 current_p
 
 // TRANSMITTOR
 
-void devices_transmitter_status(TransmitterDevice *transmitter, HealthData *health_data) {
+void devices_transmitter_status(TransmitterDevice *transmitter, HealthDataPacket *health_data) {
 
     return;
 }
@@ -227,7 +227,7 @@ int devices_storage_read(StorageDevice *storage) {
 
 // connection to nav
 
-int devices_run_telemetry_analysis(void) { // create HealthData
+int devices_run_telemetry_analysis(void) { // create HealthDataPacket
 
     // check all devices, create healthdata reports and save and continue if error occoured or any critical levels.
 
@@ -236,7 +236,7 @@ int devices_run_telemetry_analysis(void) { // create HealthData
     return 0;
 }
 
-int devices_anomaly_found_protocol(HealthData health_data) { // from CDS(this) or other FP(fault protection) algorithms or downlink
+int devices_anomaly_found_protocol(HealthDataPacket health_data) { // from CDS(this) or other FP(fault protection) algorithms or downlink
     
     // eg. termniate device processes
 

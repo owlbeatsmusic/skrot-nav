@@ -28,7 +28,7 @@ Vector3 tracked_objects[200];
 /*    Drift    */
 /* ----------- */
 
-void flightpath_drift_status(HealthData *health_data) {
+void flightpath_drift_status(HealthDataPacket *health_data) {
     
 }
 

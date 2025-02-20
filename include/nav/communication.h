@@ -39,7 +39,7 @@ typedef struct {
     /* TODO: "subsystems" */ 
     uint32_t drift_status;        // 0 = normal, 1 = warning, 2 = critical)
 
-} HealthData;
+} HealthDataPacket;
 
 typedef enum {
 
@@ -71,7 +71,7 @@ typedef struct {
     char general_data[256];
 
     // HEALTH
-    HealthData health_data;
+    HealthDataPacket health_data;
 
     // COMMAND
     FILE *SEF_file;             // SEquence of Events

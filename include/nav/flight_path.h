@@ -14,7 +14,7 @@ typedef struct {
     uint32_t estimated_time;
 } FlightPath;
 
-extern void flightpath_drift_status(HealthData *health_data);
+extern void flightpath_drift_status(HealthDataPacket *health_data);
 
 extern int flightpath_create_course_maneuver(FlightPathManeuver *manouver);
 extern void flightpath_perform_maneuver(FlightPathManeuver *manouver);
