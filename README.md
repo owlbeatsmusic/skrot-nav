@@ -172,6 +172,6 @@ The program structure was largely completed. Several systems necessary for real-
 </br>
 
 ### Main Sources
-Doody, D. (den 06 November 2024). Basics of Spaceflight. From NASA: https://science.nasa.gov/learn/basics-of-space-flight/
+Doody, D. (2024-10-04). Basics of Spaceflight. From NASA: https://science.nasa.gov/learn/basics-of-space-flight/
 
-JPL. (den 3 Mars 2009). JPL Institutional Coding Standard for the C Programming Language. From: https://yurichev.com/mirrors/C/JPL_Coding_Standard_C.pdf
+JPL. (2009-03-03). JPL Institutional Coding Standard for the C Programming Language. From: https://yurichev.com/mirrors/C/JPL_Coding_Standard_C.pdf
