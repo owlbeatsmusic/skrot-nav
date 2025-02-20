@@ -156,6 +156,7 @@ The program structure was largely completed. Several systems necessary for real-
 
 ---
 
+</br>
 
 ### Main Sources
 Doody, D. (den 06 November 2024). Basics of Spaceflight. From NASA: https://science.nasa.gov/learn/basics-of-space-flight/
