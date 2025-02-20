@@ -1,10 +1,19 @@
 # SKROT-NAV
-A navigation system for a debris-collecting spacecraft, placed in a simulated earth orbit with the idea of being able to be used in real space. This code is part of my upper secondary school graduation project.
+A general navigation system for a debris-collecting spacecraft, placed in a simulated earth orbit with the idea of being able to be used in real space (not possible at current state). This code is part of my upper secondary school graduation project.
 
 ![screenshot of skrot-nav from 2025-02-07](https://github.com/owlbeatsmusic/skrot-nav/blob/main/docs/images/screenshot_2025-02-07.png?raw=true)
 
 > [!NOTE]
 > Everything from this point forward in the README file is **translated** from **swedish** to **english** by ChatGPT 4o and is part of my graduation project.
+
+<br>
+
+## 1.2 Purpose
+By programming a custom navigation system, the goal is to gain a better understanding of how the subsystems are structured and to gain insight into the availability of resources in the field. The 'general' characteristic of the navigation system was chosen with the aim of creating a template to enhance the accessibility of constructing a navigation system in space for a debris-collecting spacecraft.
+
+<br>
+
+## 1.5 Method
 
 ### 1.5.1 Introduction  
 This method will primarily involve an account and explanation of the program's structure. The most overarching division of the program consists of the engine and the navigation system. The engine manages the simulation in which the navigation system operates, as well as handling the visual user interface. The navigation system is the actual program that, in practice, would run on the spacecraft in space.
