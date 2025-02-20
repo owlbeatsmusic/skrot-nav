@@ -154,7 +154,10 @@ The packets consist of information sent between different subsystems and between
 
 The program structure was largely completed. Several systems necessary for real-world applications, such as launch and return protocols, are missing. However, a basic framework for the most essential subsystems of a space debris collection navigation system has been implemented.  Given the research question('how should a navigation system for a debris collecting spacecraft be structured'), which focuses only on structuring the system, and since the purpose of the program is to serve as a template, many subsystems have not been implemented or simulated. Missing systems include device simulations and a flight path determination algorithm.
 
+---
 
-### 3. Main Sources
- - NASA: Basics Of Spaceflight (https://science.nasa.gov/learn/basics-of-space-flight/)
- - JPL: Standards for C (https://yurichev.com/mirrors/C/JPL_Coding_Standard_C.pdf)
+
+### Main Sources
+Doody, D. (den 06 November 2024). Basics of Spaceflight. From NASA: https://science.nasa.gov/learn/basics-of-space-flight/
+
+JPL. (den 3 Mars 2009). JPL Institutional Coding Standard for the C Programming Language. From: https://yurichev.com/mirrors/C/JPL_Coding_Standard_C.pdf
