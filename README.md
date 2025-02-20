@@ -34,10 +34,14 @@ To begin planning the engine and navigation system, relevant sources were consul
 
 ---
 
+</br>
+
 ### 1.5.2 Programming Environment  
 The entire project is programmed in the C programming language and follows the ISO9899:1999 standard, which is the C standard from 1999. Compilation and most of the code adhere to NASA's Jet Propulsion Laboratory (JPL) standard for C (JPL, 2009).  
 
 ---
+
+</br>
 
 ### 1.5.3 The Engine  
 
