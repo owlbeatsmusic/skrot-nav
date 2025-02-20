@@ -3,31 +3,8 @@ A navigation system for a debris-collecting spacecraft, placed in a simulated ea
 
 ![screenshot of skrot-nav from 2025-02-07](https://github.com/owlbeatsmusic/skrot-nav/blob/main/docs/images/screenshot_2025-02-07.png?raw=true)
 
-### How to use
-Some of the code is meant to be reimplemented when the code is used in real space, eg. device-simulations used to demonstrate and test the program.
-
-## Main Sources
- - NASA: Basics Of Spaceflight (https://science.nasa.gov/learn/basics-of-space-flight/)
- - JPL: Standards for C (https://yurichev.com/mirrors/C/JPL_Coding_Standard_C.pdf)
-
-</br>
-
----
-
-</br>
-
 > [!NOTE]
 > Everything from this point forward in the README file is **translated** from **swedish** to **english** by ChatGPT 4o and is part of my graduation project.
-
-
-### Setup  
-1. **Visual Studio Code**  
-   1. Install Visual Studio Code: [https://code.visualstudio.com/](https://code.visualstudio.com/)  
-
-2. **Clang**  
-   1. Install HomeBrew: [https://brew.sh/](https://brew.sh/)  
-   2. Install Clang through the terminal: `brew install clang`  
-   3. Compile the project by running `./make.sh` from the terminal  
 
 ### 1.5.1 Introduction  
 This method will primarily involve an account and explanation of the program's structure. The most overarching division of the program consists of the engine and the navigation system. The engine manages the simulation in which the navigation system operates, as well as handling the visual user interface. The navigation system is the actual program that, in practice, would run on the spacecraft in space.
@@ -117,6 +94,7 @@ The downlink is the communication from the spacecraft to Earth. The goal of the 
 The navigation system is fundamentally controlled from the core, where the central process, or loop, resides. In this process, the navigation system is initiated by starting its primary function: the creation of a flight path. A flight path is the trajectory planned by the navigation system to reach space debris. The debris is located by compiling retrieved and collected information. Before generating the flight path, the spacecraft's position in space must be determined, which requires calculations based on data from the downlink.
 
 ![navigation-system-diagram](https://github.com/owlbeatsmusic/skrot-nav/blob/main/docs/images/navigation-system-diagram.png?raw=true)
+
 **Figure 2**. Diagram of the main interactions between the navigation system components for the flight path determination subsystem. Flight path, object detection, optimal flight path, and deviations from the planned route are handled in flight_path.c. Position determination is managed in position.c. Communication is handled in communication.c, and device management takes place in devices.c.
 
 </br>
@@ -156,6 +134,7 @@ The process from requesting to configuring measurement data is described here. I
 The packet is sent to the file communication.c, where it is forwarded to the transmitter in devices.c. From there, the packet is sent to the downlink. In the downlink, a new packet is created, with its request ID set to the original request packet's ID. The requested information is then included in the new packet. Finally, the packet is sent back to communication.c on the spacecraft. From there, the information about the requested measurement data is updated in position.c.
 
 ![request-set-diagram](https://github.com/owlbeatsmusic/skrot-nav/blob/main/docs/images/request-set-diagram.png?raw=true)
+
 **Figure 3**. Diagram of the request and configuration of measurement data. The information is retrieved from the downlink and set in the program’s position component (src/nav/position.c).
 
 </br>
@@ -175,3 +154,7 @@ The packets consist of information sent between different subsystems and between
 
 The program structure was largely completed. Several systems necessary for real-world applications, such as launch and return protocols, are missing. However, a basic framework for the most essential subsystems of a space debris collection navigation system has been implemented.  Given the research question('how should a navigation system for a debris collecting spacecraft be structured'), which focuses only on structuring the system, and since the purpose of the program is to serve as a template, many subsystems have not been implemented or simulated. Missing systems include device simulations and a flight path determination algorithm.
 
+
+### 3. Main Sources
+ - NASA: Basics Of Spaceflight (https://science.nasa.gov/learn/basics-of-space-flight/)
+ - JPL: Standards for C (https://yurichev.com/mirrors/C/JPL_Coding_Standard_C.pdf)
