@@ -20,4 +20,3 @@ gcc -Wall -pedantic -std=iso9899:1999 \
     \
     -o \
     main
-w

@@ -8,7 +8,6 @@
     (description updated 2025-01-25)
 */
 
-#include <arpa/inet.h>
 #include <stdlib.h>
 #include <unistd.h>
 #include <stdint.h>
