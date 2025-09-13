@@ -3,8 +3,11 @@ A general navigation system for a debris-collecting spacecraft, placed in a simu
 
 ![screenshot of skrot-nav from 2025-02-07](https://github.com/owlbeatsmusic/skrot-nav/blob/main/docs/images/screenshot_2025-02-07.png?raw=true)
 
-> [!NOTE]
-> Everything from this point forward in the README file is **translated** from **swedish** to **english** by ChatGPT 4o.
+</br>
+
+> [!IMPORTANT]
+> Everything from this point forward is in **swedish**. For **english**, see [README-english.md](https://github.com/owlbeatsmusic/skrot-nav/blob/main/README-english.md).
+
 
 <br>
 
