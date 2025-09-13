@@ -11,45 +11,88 @@ A general navigation system for a debris-collecting spacecraft, placed in a simu
 
 <br>
 
-## 1.2 Purpose
-By programming a custom navigation system, the goal is to gain a better understanding of how the subsystems are structured and to gain insight into the availability of resources in the field. The 'general' characteristic of the navigation system was chosen with the aim of creating a template to enhance the accessibility of constructing a navigation system in space for a debris-collecting spacecraft.
+## 1.2 Syfte
+Genom att programmera ett eget navigationssystem är syftet att få
+en bättre förståelse för hur delsystemen är uppbyggda och även få insikt i tillgängligheten av
+resurser inom området. Den allmänna egenskapen av navigationssystemet valdes i syftet att
+skapa en mall för att öka tillgängligheten av att konstruera ett navigationssystem i rymden för
+en skrotinsamlande farkost.
 
 <br>
 
-## 1.5 Method
+## 1.5 Metod
 
-### 1.5.1 Introduction  
-This method will primarily involve an account and explanation of the program's structure. The most overarching division of the program consists of the engine and the navigation system. The engine manages the simulation in which the navigation system operates, as well as handling the visual user interface. The navigation system is the actual program that, in practice, would run on the spacecraft in space.
+### 1.5.1 Introduktion  
+Denna del av metoden kommer att i huvudsak innefatta en redovisning och förklaring av
+programmets struktur. Den mest övergripande indelningen av programmet är motorn och
+navigationssystemet. Motorn hanterar simulationen som navigationssystemet befinner sig i
+samt hanterar det visuella användargränssnittet. Navigationssystemet är självaste programmet
+som i praktiken skulle köras på en farkost i rymden.
 
-Initially, the programming environment will be briefly described, followed by the engine and finally the navigation system. The engine can be compared to the environment surrounding the navigation system and consists of three parts. The first part is the space simulation, which calculates forces and updates position. The second part is the downlink simulation, which handles communication with Earth. The last part is the renderer, which manages the user interface and thus the connection between the program and the user.
-
-The navigation system is primarily divided into the core, which serves as the foundation of the navigation system, the flight path determination, which creates the route for collecting space debris, and finally the position determination, which is necessary for flight path creation. The navigation system also includes a component for communication and a component for interaction with devices such as RADAR.
+Inledningsvis kommer programmeringsmiljön att kortfattat beskrivas, därefter motorn och sist
+navigationssystemet. Motorn kan liknas med miljön runt om navigationssystemet och består
+av tre delar. Den första delen är rymdsimulationen som beräknar krafter och uppdaterar
+positioner. Den andra delen är renderaren som hanterar användargränssnittet och därmed
+kopplingen mellan programmet och användaren. Den sista delen är simulationen av
+nedlänken, vilket är kommunikationen ned till jorden. Navigationssystemet delas upp i
+framför allt kärnan som är navigationssystemets utgångspunkt, flygvägsbestämningen som
+skapar vägen för att samla in rymdskrot och sist positionsbestämning vilket behövs för
+skapandet av flygvägar. Navigationssystemet innehåller även en del som hanterar
+kommunikation och en del för interaktion med enheter som exempelvis RADAR.
 
 ![project-structure-overview](https://github.com/owlbeatsmusic/skrot-nav/blob/main/docs/images/project-overview-diagram.png?raw=true)
 
-**Figure 1**: Diagram of the overall file structure and the interaction between the engine (`/src/engine/`) and the navigation system (`/src/nav/`).  
+**Figur 1.** Diagram över den övergripande filstrukturen och interaktionen mellan motor (/src/engine/) och navigationssystem
+(/src/nav/).
 
-The primary purpose of the navigation system is to serve as a template for practical applications while remaining operational within the simulation. The components should be independent, as the navigation system must be separable from the engine and applicable in real-world scenarios. The entire codebase is also open-source to facilitate practical use. Open-source means that the code is publicly available on the internet. The two-part structure of the program, consisting of the engine and the navigation system, thus forms the foundation of the entire project.
+Navigationssystemet har i huvudsyfte att fungera som en mall för praktiska applikationer
+medan det fortfarande ska vara operativt i simulationen. Delarna ska vara fristående ty
+navigationssystemet ska kunna separeras från motorn och kunna appliceras i praktiken.
+Programmet har även öppen källkod i syfte av användning i praktiken. Öppen källkod innebär
+att koden finns tillgänglig på internet och därmed för allmänheten. Den tvådelade strukturen
+av programmet i form av motor och navigationssystem är därmed basen för hela projektet.
 
-There is also a third component in the overall structure: utility functions. These functions are general, meaning they can be used across various parts of the program and are not specific to any single component. An example of a utility function is the function "vector_normalize()" in the file "/src/common/vector.c", which calculates the normal of a vector.
+Det finns även en tredje del i den övergripande strukturen som är hjälparfunktioner. Dessa
+funktioner är allmänna vilket innebär att de kan användas i andra funktioner över hela
+programmet och är inte specifika för någon del av programmet. Ett exempel på en
+hjälparfunktion är funktionen: ”vector_normalize()” i filen ”/src/common/vector.c” som
+beräknar normalen av en vektor.
 
-To begin planning the engine and navigation system, relevant sources were consulted. NASA’s "Basics of Spaceflight", a website written by Dave Doody (Doody, 2024), provides an overview of the fundamentals of spaceflight. The site discusses various types of spacecraft, their components, and how navigation works in space. The latter is of particular interest for this study, along with the technical specifications of some components. The broad division of the navigation system is to create and control flight paths. To generate these flight paths, information about the spacecraft's position (Doody, 2024) and the position of nearby debris is required.
+För att påbörja planeringen av motorn och navigationssystemet söktes relevanta källor.
+NASA:s ”Basics of Spaceflight”, en webbsida skriven av Dave Doody (Doody, 2024), ger en
+översiktlig bild av grunderna inom rymdflygning. Sidan diskuterar olika typer av farkoster,
+deras komponenter och hur navigationen går till i rymden. Varav det senare är av störst
+intresse för denna undersökning men även tekniska specifikationer av somliga komponenter
+är av intresse. Den grova uppdelningen av navigationssystemet är att skapa och kontrollera
+flygvägar. För att skapa dessa flygvägar behövs information om farkostens position (Doody,
+2024) och närliggande skrots position.
 
 ---
 
 </br>
 
-### 1.5.2 Programming Environment  
-The entire project is programmed in the C programming language and follows the ISO9899:1999 standard, which is the C standard from 1999. Compilation and most of the code adhere to NASA's Jet Propulsion Laboratory (JPL) standard for C (JPL, 2009).  
+### 1.5.2 Programmeringsmiljö  
+Hela projektet är programmerat i programmeringsspråket C och följer iso9899:1999, vilket är
+standarden för C år 1999. Kompilering och i huvudsak hela koden följer JPL:s (NASA Jet
+Propulsion Laboratory) standard för C (JPL, 2009).
 
 ---
 
 </br>
 
-### 1.5.3 The Engine  
+### 1.5.3 Motorn 
 
-#### 1.5.3.1 Space Simulation (`src/engine/space.c`)  
-The engine is developed before the navigation system. The space simulation is limited to the minimal requirements necessary for the navigation system to function. This limitation is due to the fact that the simulation is not the primary focus of the study, and time for the project is restricted. The goal of the space simulation is to generate space debris and simulate both the debris and the debris-collecting spacecraft’s orbit around Earth. The core of this part of the engine is a loop that primarily updates all positions using Euler’s method. The loop repeats a variable number of times (steps) with an interval of ∆t. For each step, a function calculates the gravitational force exerted on each object to determine acceleration, which is then used to calculate the object’s velocity using Euler’s method:  
+#### 1.5.3.1 Rymdsimulationen (`src/engine/space.c`)  
+Skapandet av motorn påbörjas innan navigationssystemet. Simulationen av rymden avgränsas
+till det minsta nödvändiga för att navigationssystemet ska fungera. Anledningen till
+avgränsningen är att simulationen inte är det huvudsakliga fokuset av undersökningen och
+eftersom tiden för arbetet är begränsad. Målet med rymdsimulationen är att skapa rymdskrot
+och sedan simulera både skrotet och den skrotinsamlande farkostens bana runt jorden. Kärnan
+i rymdsimulationen är en slinga som primärt uppdaterar alla positioner med Eulers
+Stegmetod. Slingan upprepar ett variabelt antal gånger (steg) med mellanrummet ∆t. För varje
+steg används en funktion för att beräkna gravitationskraften som varje objekt utsätts för vilket
+används för att beräkna accelerationen som därefter används för att beräkna objektets
+hastighet med Eulers Stegmetod genom följande:  
 
 $v_x = a_x \cdot \Delta t$
 
@@ -57,7 +100,13 @@ $v_y = a_y \cdot \Delta t$
 
 $v_z = a_z \cdot \Delta t$
 
-The initial positions of all objects, i.e., the spacecraft and space debris, are randomly placed in Low Earth Orbit (LEO). For them to follow a correct orbital path around Earth, their initial velocity must be set to orbital velocity and the velocity direction must be perpendicular to the position vector. This is achieved by calculating the magnitude of the vector using the orbital velocity formula and determining the vector direction by taking the cross product of the position vector with an arbitrary vector. Finally, the object's velocity is set. These calculations are represented in the program as follows:  
+Alla objekts, d.v.s. farkostens och rymdskrotets, initiala positioner sätts slumpmässigt i jorden
+LEO. För att gå i en korrekt bana runt jorden behöver även deras initiala hastigheter sättas till
+omloppshastigheten samt att hastigheternas riktningar behöver vara vinkelräta mot objektens
+positionsvektorer. För varje objekt tas hastigheten fram genom att beräkna storleken på
+hastighetsvektorn med formeln för omloppshastighet och därefter beräkna hastighetsvektorns
+riktning genom att ta kryssprodukten av positionsvektorn med en godtycklig vektor. Sist sätts
+objektets hastighet. Dessa beräkningar representeras i programmet på detta vis:
 
 ```c
 int r = vector_distance(position, earth_pos);
@@ -81,8 +130,13 @@ SpaceObject temp_space_object = {
 
 </br>
 
-#### 1.5.3.2 Renderer (`src/engine/renderer.c`)  
-The graphical user interface is not directly relevant to the research question, similar to the space simulation, but its goal is to quickly visualize necessary information for the user to verify the navigation system's functionality. The most important function of the renderer is to display Earth’s orbit to illustrate the position of space debris and the spacecraft. This representation is done through views showing a 2D image of two axes.  
+#### 1.5.3.2 Renderaren (`src/engine/renderer.c`)  
+Det grafiska användargränssnittet är inte direkt relevant för frågeställningen, likt
+rymdsimulationen, utan har som mål att snabbt visualisera nödvändig information till
+användaren för att kunna bekräfta navigationssystemets funktion. Renderarens viktigaste
+funktion är att visualisera jordensomloppsbana för att kunna redogöra för positionen av
+rymdskrot och farkost. Denna redogörelse görs genom vyer som visar en tvådimensionell bild
+av två axlar.
 
 ```c
 View renderer_views[] = {
@@ -92,31 +146,50 @@ View renderer_views[] = {
 };
 ```
 
-In this list of views, the order in which they appear in the user interface can be modified with the first two arguments. The scale of the view is determined by the fourth argument, which specifies the width of the view. The third argument determines whether the view should center and follow an object, where `-1` means no object is followed. In the file `main.c`, the first view is set to follow the spacecraft:  
+I denna lista av vyer kan ordning de befinner sig i användargränssnittet modifieras med de två
+första argumenten. Skalan på vyn bestäms genom det fjärde argumentet genom att ange
+bredden som vyn ska visa. Det tredje argumentet avgör ifall vyn ska centrera och följa något
+objekt, där -1 är inget objekt. I filen ”main.c” sätts den första vyn till att följa farkosten: 
 
 ```c
 renderer_views[0].center_object_index = nav_spaceobjects_index;
 ```
 
-#### 1.5.3.3 The Downlink
-(src/engine/downlink.c)
-The downlink is the communication from the spacecraft to Earth. The goal of the downlink simulation is both to send requests for information from the spacecraft, such as the active flight path, and to receive and respond to requests from the spacecraft.
+Dessa vyer kan skapas och modifieras av användaren genom att anpassa listan samt att sätta
+centrering.
+
+#### 1.5.3.3 Nedlänken(`src/engine/downlink.c`)  
+Nedlänken är kommunikationen från farkosten upp till jorden. Målet med simulationen av
+nedlänken är att både skicka förfrågningar om information från farkosten, som exempelvis
+den aktiva flygbanan, och att ta emot och svara på förfrågningar från farkosten.
 
 ---
 
 </br>
 
-### 1.5.4 The Navigation System (`src/nav/`)  
-The navigation system is fundamentally controlled from the core, where the central process, or loop, resides. In this process, the navigation system is initiated by starting its primary function: the creation of a flight path. A flight path is the trajectory planned by the navigation system to reach space debris. The debris is located by compiling retrieved and collected information. Before generating the flight path, the spacecraft's position in space must be determined, which requires calculations based on data from the downlink.
+### 1.5.4 Navigationssystemet (`src/nav/`)  
+Navigationssystemet styrs i grunden från kärnan där den centrala processen, alltså slingan,
+befinner sig. I den processen startas navigationssystemet genom att påbörja systemets
+huvudsakliga syfte: skapandet av en flygväg. En flygväg är den bana som
+navigationssystemet planerar för att ta sig till rymdskrot. Skrotet lokaliseras genom
+sammanställning av hämtad och samlad information. Innan rymdvägen skapas behövs
+positionen av farkosten i rymden vilket beräknas med information från nedlänken.
 
 ![navigation-system-diagram](https://github.com/owlbeatsmusic/skrot-nav/blob/main/docs/images/navigation-system-diagram.png?raw=true)
 
-**Figure 2**. Diagram of the main interactions between the navigation system components for the flight path determination subsystem. Flight path, object detection, optimal flight path, and deviations from the planned route are handled in flight_path.c. Position determination is managed in position.c. Communication is handled in communication.c, and device management takes place in devices.c.
+**Figur 2.** Diagram över den huvudsakliga interaktionen mellan navigationssystemets delar för subsystemet för
+flygvägsbestämnig. Flygväg, objektsdetektering, bästa flygväg och drift från flygväg sker i flight_path.c. Position
+bestämning sker i position.c. Kommunikation sker i communication.c och enheter hanteras i devices.c.
 
 </br>
 
-#### 1.5.4.1 Navigation: Core (`src/nav/core.c`)  
-The flight path component of the program manages four different aspects, categorized as follows: controlling the program through the central process and connecting the navigation system with the simulation. This means that the core also serves as the starting point of the system. Consequently, the core handles system shutdown and other fundamental functions. The system and the internal clock are initialized and linked to the simulation through the following function (pseudocode):
+#### 1.5.4.1 Navigation: Kärnan (`src/nav/core.c`)  
+Kärnan av programmet hanterar två olika delar som kategoriserar enligt följande: styra
+programmet genom den centrala processen och att koppla samman navigationssystemet med
+simulationen. Detta innebär att kärnan även är startpunkten för systemet. Kärnan hanterar då
+som följd avstängning av systemet samt andra basnivåfunktioner. Systemet och den interna
+klockan startas, och navigationssystemet kopplas samman med simulationen genom följande
+funktion (pseudokod):
 
 ```c
 nav_core_create() {
@@ -128,53 +201,77 @@ nav_core_create() {
 
 </br>
 
-#### 1.5.4.2 Navigation: Flight Path (`src/nav/flight_path.c`)  
+#### 1.5.4.2 Navigation: Flygväg (`src/nav/flight_path.c`)  
 
-The flight path component of the program manages four different aspects, categorized as follows: flight path creation, space debris localization, maneuver planning and execution, and deviations from the planned flight path. The primary focus is on initiating and updating the flight path.
-
-This process occurs in three steps:
-
-Determining the spacecraft’s own position (1.5.4.3).
-Locating nearby debris.
-Creating and executing the necessary maneuvers.
-The position of space debris is identified by scanning the spacecraft's surroundings using selected devices such as RADAR and LIDAR.
+Flygvägsdelen av programmet hanterar fyra olika delar som kategoriserar enligt följande:
+skapande av flygväg, lokalisering av rymdskrot, skapandet och utförande manövrar, och drift
+från flygväg. Främst är startpunkten för skapandet av en flygväg samt uppdatering av den
+flygvägen. Skapandet av en flygväg sker i två tre steg. Först avgöra farkostens egen position
+(1.5.4.3) sedan lokalisera närliggande skrot, och sist skapa och utföra nödvändiga manövrar.
+Rymdskrotets position tas reda på genom att skanna farkostens omgivning med de valda
+enheter som exempelvis RADAR och LIDAR.
 
 </br>
 
 #### 1.5.4.3 Navigation: Position (`src/nav/position.c`)  
 
-The position component of the program manages three different aspects, categorized as follows: evaluation and prediction of position, collision detection, and request and configuration of measurement data. The evaluation of the spacecraft's position begins by sending measurement data requests to the downlink. Once the requested information arrives from the downlink, it is used to calculate the spacecraft's position.
+Positionsdelen av programmet hanterar tre olika delar som kategoriseras enligt följande:
+utvärdering och förutsägelse av position, kollisionsdetektering, och förfrågning och
+inställning av mätdata. Utvärderingen av farkostens position inleds genom att skicka
+mätdataförfrågningar till nedlänken. När den förfrågade informationen anlänt från nedlänken
+kommer den användas för att beräkna farkostens position.
 
-The process from requesting to configuring measurement data is described here. In NASA’s "Basics of Spaceflight", the three most important measurements for determining position in space are highlighted. These are the spacecraft’s distance from Earth, radial velocity, and position in Earth's sky. This information must be retrieved from the downlink, which occurs by first sending a request for the data. The request is a communication data packet containing variables for the different measurements, a unique ID, and a request ID.
+Här kommer steget från förfrågning till inställning av mätdata att beskrivas. I NASA:s ”Basic
+of Spaceflight” lyfts de tre viktigaste mätdata för bestämning av position i rymden. Dessa tre
+är farkostens avstånd från jorden, radialhastigheten och position på jordens himmel. Denna
+information behöver hämtas från nedlänken och sker genom att först skicka en förfrågan om
+informationen. Förfrågan är ett kommunikationsdatapaket som innehåller variabler för de
+olika mätdata och ett unikt ID samt ett förfrågnings-ID (se variablers representation i kod i
+tabell 1)
 
-The packet is sent to the file communication.c, where it is forwarded to the transmitter in devices.c. From there, the packet is sent to the downlink. In the downlink, a new packet is created, with its request ID set to the original request packet's ID. The requested information is then included in the new packet. Finally, the packet is sent back to communication.c on the spacecraft. From there, the information about the requested measurement data is updated in position.c.
+Paketet förs till filen ”communication.c” där den sänds vidare till transmittern i ”devices.c”
+.
+Därifrån skickas paketet till nedlänken. I nedlänken skapas ett nytt paket vars förfrågnings-ID
+sätts till förfrågningspaketets ID. Den förfrågade informationen läggs även in i det nya
+paketet. Därefter skickas paket tillbaka till ”communication.c ” i farkosten och uppdaterar
+informationen om den förfrågade mätdata i ”position.c”.
 
 ![request-set-diagram](https://github.com/owlbeatsmusic/skrot-nav/blob/main/docs/images/request-set-diagram.png?raw=true)
 
-**Figure 3**. Diagram of the request and configuration of measurement data. The information is retrieved from the downlink and set in the program’s position component (src/nav/position.c).
+**Figur 3.** Diagram över förfrågning och inställning av mätdata. Informationen hämtas från nedlänken och uppdateras i
+programmets positionsdel (src/nav/position.c)
 
 </br>
 
-#### 1.5.4.4 Navigation: Communication (`src/nav/communication.c`)  
-(src/nav/communication.c)
-The communication part of the program handles three sections, categorized as follows: packet handling, request queue system, and event file interpretation. Packet handling consists of four functions: creating packets, sending packets, receiving packets, and storing packets.
-
-The packets consist of information sent between different subsystems and between the spacecraft and Earth. There are two types of packets: communication packets and health packets. Communication packets are used for general communication and are either of the receiving type, such as a data request, or of the sending type, such as manual control instructions from Earth. The health packet is mainly used for checking physical devices and contains information such as temperature and pressure.
+#### 1.5.4.4 Navigation: Kommunikation (`src/nav/communication.c`)  
+Kommunikationsdelen av programmet hanterar i huvudsak två delar som kategoriserar enligt
+följande: pakethantering och kösystem för förfrågningar. Pakethanteringen består i sin tur av
+fyra funktioner: att skapa paket, skicka paket, ta emot paket och att lagra paket.
+Paketen består av informationen som skickas mellan olika delsystem, och mellan farkosten
+och jorden. Det finns två typer av paket: kommunikationspaket och hälsopaket.
+Kommunikationspaketen används för generell kommunikation och är antingen av skickande
+typ, som exempelvis ett svar på en dataförfrågning, eller av mottagande typ som exempelvis
+manuella styrningsinstruktioner från jorden. Hälsopaketet används främst vid kontroller av
+fysiska enheter och innehåller information som temperatur och tryck.
 
 ---
 
 </br>
 
 
-### 2. Conclusion  
+### 2. Slutsats  
 
-The program structure was largely completed. Several systems necessary for real-world applications, such as launch and return protocols, are missing. However, a basic framework for the most essential subsystems of a space debris collection navigation system has been implemented.  Given the research question('how should a navigation system for a debris collecting spacecraft be structured'), which focuses only on structuring the system, and since the purpose of the program is to serve as a template, many subsystems have not been implemented or simulated. Missing systems include device simulations and a flight path determination algorithm.
+Det är möjligt att skapa ett mycket grundläggande allmänt navigationssystem i rymden för en
+skrotinsamlande farkost. Systemet kan struktureras genom att delas upp i huvudsakligen kärna
+och flygvägsbestämnig. Flygvägsbestämningen delas upp i positionsbestämning,
+objektsdetektering, skapandet av serier av manövrar och koppling till kommunikation och
+enheter.
 
 ---
 
 </br>
 
-### Main Sources
+### Källor
 Doody, D. (2024-10-04). Basics of Spaceflight. From NASA: https://science.nasa.gov/learn/basics-of-space-flight/
 
 JPL. (2009-03-03). JPL Institutional Coding Standard for the C Programming Language. From: https://yurichev.com/mirrors/C/JPL_Coding_Standard_C.pdf
